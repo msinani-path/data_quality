@@ -39,20 +39,19 @@ from matplotlib.ticker import PercentFormatter
 from PIL import Image as IMG
 import numpy as np
 
-import data_accuracy_practice as dq
+import dq_functions as dq
 import measure_definitions_2024 as m
-import KPI_measures_2024 as k
+import quality_report_formatting as rf
 import db_setup_functions_2024 as dsf
-import qaulity_report_formatting as rf
 
 db_name ='merged_hmis2024.db'
-glossary_csv = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\DQ glossary.csv" 
+glossary_csv = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\DQ glossary.csv"
 
-report_folder = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Github\\personal\\completed_reports"
+report_folder = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\completed_reports"
 
-image_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\images"
-chart_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\charts"
-font_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\fonts"
+image_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\images"
+chart_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\charts"
+font_library_name = "C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\fonts"
 
 PATHLightBlue = (173/255, 216/255, 230/255) 
 PATHLightPurple = (220/255, 190/255, 221/255)  
@@ -1543,7 +1542,7 @@ class QuarterlyReports:
         self.elements.append(PageBreak())
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle))
         self.elements.append(Spacer(0,inch/15))
-        #self.department_timeliness(department=department,program_id=program_id)
+        self.department_timeliness(department=department,program_id=program_id)
         self.elements.append(PageBreak())
         
         print(f"   Ending Region/Department Data Quality for {region,department}")
@@ -1559,10 +1558,10 @@ class QuarterlyReports:
     def division3(self,department=None,program_id=None):
         print(f"   Starting Region/Department Data Quality for {program_id}")
         
-        #self.program_dataquality(department=department,program_id=program_id)
+        self.program_dataquality(department=department,program_id=program_id)
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle2))
         self.elements.append(Spacer(0,inch/10))
-        #self.program_timeliness(program_id=program_id)
+        self.program_timeliness(program_id=program_id)
         self.elements.append(PageBreak())
 
 

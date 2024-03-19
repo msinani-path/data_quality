@@ -319,6 +319,18 @@ class Name():
                 OR Client.FirstName IS NULL
                 OR Client.LastName IS NULL)'''
                 
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND ((Client.NameDataQuality in (2,8,9,99))
+                OR Client.FirstName IS NULL
+                OR Client.LastName IS NULL)'''
+                
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.PersonalID)
             FROM Enrollment
@@ -346,6 +358,7 @@ class Name():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -354,6 +367,7 @@ class Name():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -362,6 +376,7 @@ class Name():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -370,6 +385,7 @@ class Name():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -383,6 +399,9 @@ class Name():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -399,8 +418,8 @@ class Name():
                     return 0
             else:
                 return None
-        elif output=='count':
-            return total_enrollments-total_score
+        elif output=='list':
+            return pt_list
             
     
     def name_client_refused_doesnt_know(self,start_date, end_date,output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
@@ -735,6 +754,42 @@ class SSN():
                 )
             ))
         '''
+        
+        sql_list = '''
+        SELECT DISTINCT Enrollment.PersonalID
+        FROM Enrollment
+        LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+        INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+        INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+        WHERE Enrollment.EntryDate <= ? 
+        AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+        AND (
+            Client.SSNDataQuality IN (8, 9, 99)
+            OR Client.SSN IS NULL
+            OR (
+                (Client.SSNDataQuality = 2)
+                OR 
+                (
+                    Client.SSNDataQuality = 1 
+                    AND LENGTH(Client.SSN) = 9
+                    AND (
+                        Client.SSN LIKE '000000000'
+                        OR Client.SSN LIKE '111111111'
+                        OR Client.SSN LIKE '222222222'
+                        OR Client.SSN LIKE '333333333'
+                        OR Client.SSN LIKE '444444444'
+                        OR Client.SSN LIKE '555555555'
+                        OR Client.SSN LIKE '666666666'
+                        OR Client.SSN LIKE '777777777'
+                        OR Client.SSN LIKE '888888888'
+                        OR Client.SSN LIKE '999999999'
+                        OR Client.SSN LIKE '123456789'
+                        OR Client.SSN LIKE '234567890'
+                        OR Client.SSN LIKE '987654321'
+                    )
+                )
+            ))
+        '''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.PersonalID)
@@ -763,6 +818,7 @@ class SSN():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -771,6 +827,7 @@ class SSN():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -779,6 +836,7 @@ class SSN():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -787,6 +845,7 @@ class SSN():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -800,6 +859,9 @@ class SSN():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -815,8 +877,8 @@ class SSN():
                     return 0
             else:
                 return None
-        elif output =="count":
-            return total_enrollments-total_score
+        elif output =="list":
+            return pt_list
             
     def ssn_client_refused_doesnt_know(self,start_date, end_date,output=None, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -1148,7 +1210,21 @@ class DOB():
                 OR (Client.DOB < '1915-01-01') -- Prior to 1/1/1915
                 OR (Client.DOB > Enrollment.EntryDate) -- After the record creation date
                 )'''
-                
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND  (Client.DOBDataQuality IN (8, 9, 99)
+                OR Client.DOB IS NULL
+                OR Client.DOBDataQuality = 2
+                OR (Client.DOB < '1915-01-01') -- Prior to 1/1/1915
+                OR (Client.DOB > Enrollment.EntryDate) -- After the record creation date
+                )'''
+                        
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.PersonalID)
             FROM Enrollment
@@ -1176,6 +1252,7 @@ class DOB():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -1184,6 +1261,7 @@ class DOB():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -1192,6 +1270,7 @@ class DOB():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -1200,6 +1279,7 @@ class DOB():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -1213,6 +1293,9 @@ class DOB():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -1228,8 +1311,8 @@ class DOB():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
 
     def dob_client_refused_doesnt_know(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -1535,6 +1618,16 @@ class Race():
                 WHERE Enrollment.EntryDate <= ? 
                 AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
                 AND  Client.RaceNone in (8,9,99)'''
+        
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND  Client.RaceNone in (8,9,99)'''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.PersonalID)
@@ -1563,6 +1656,7 @@ class Race():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -1571,6 +1665,7 @@ class Race():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -1579,6 +1674,7 @@ class Race():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -1587,6 +1683,7 @@ class Race():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -1600,6 +1697,9 @@ class Race():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -1615,8 +1715,8 @@ class Race():
                     return 0
             else:
                 return None
-        elif output =="count":
-            return total_enrollments-total_score
+        elif output =="list":
+            return pt_list
 
     def race_client_refused_doesnt_know(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -1825,6 +1925,16 @@ class Gender():
                 AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
                 AND  (Client.GenderNone >= 8)'''
                 
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND  (Client.GenderNone >= 8)'''
+                
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.PersonalID)
             FROM Enrollment
@@ -1852,6 +1962,7 @@ class Gender():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -1860,6 +1971,7 @@ class Gender():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -1868,6 +1980,7 @@ class Gender():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -1876,6 +1989,7 @@ class Gender():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -1889,6 +2003,9 @@ class Gender():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -1904,8 +2021,8 @@ class Gender():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
 
     def gender_client_refused_doesnt_know(self,start_date, end_date,output=None, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -2116,6 +2233,18 @@ class Veteran():
                 OR((Client.VeteranStatus = 99 OR Client.VeteranStatus IS NULL) AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 >18) 
                 OR(Client.VeteranStatus = 1 AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 <18 ))'''
                 
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND (((Client.VeteranStatus in (8,9)) AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 >18) 
+                OR((Client.VeteranStatus = 99 OR Client.VeteranStatus IS NULL) AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 >18) 
+                OR(Client.VeteranStatus = 1 AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 <18 ))'''
+                
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
             FROM Enrollment
@@ -2143,6 +2272,7 @@ class Veteran():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -2151,6 +2281,7 @@ class Veteran():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -2159,6 +2290,7 @@ class Veteran():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -2167,6 +2299,7 @@ class Veteran():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -2180,6 +2313,9 @@ class Veteran():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -2195,8 +2331,8 @@ class Veteran():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
         
     def veteran_client_refused_doesnt_know(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -2508,6 +2644,21 @@ class Disabling():
         OR (Enrollment.DisablingCondition=0 AND Disabilities.DisabilityType=8 AND Disabilities.DisabilityResponse=1)
         OR (Enrollment.DisablingCondition=0 AND Disabilities.DisabilityType IN (5,7,9,10) AND Disabilities.DisabilityResponse=1 AND Disabilities.IndefiniteAndImpairs=1))
         '''
+        
+        sql_list = '''
+        SELECT DISTINCT Enrollment.PersonalID
+        FROM Enrollment
+        LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+        INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+        LEFT JOIN Disabilities ON Enrollment.PersonalID = Disabilities.PersonalID
+        WHERE Enrollment.EntryDate <= ?
+        AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+        AND (Enrollment.DisablingCondition in (8,9,99)
+        OR (Enrollment.DisablingCondition=0 AND Disabilities.DisabilityType = 6 AND Disabilities.DisabilityResponse=1)
+        OR (Enrollment.DisablingCondition=0 AND Disabilities.DisabilityType=8 AND Disabilities.DisabilityResponse=1)
+        OR (Enrollment.DisablingCondition=0 AND Disabilities.DisabilityType IN (5,7,9,10) AND Disabilities.DisabilityResponse=1 AND Disabilities.IndefiniteAndImpairs=1))
+        '''
+
 
         
         sql_active_non_outreach = """
@@ -2537,6 +2688,7 @@ class Disabling():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -2545,6 +2697,7 @@ class Disabling():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -2553,6 +2706,7 @@ class Disabling():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -2561,6 +2715,7 @@ class Disabling():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -2574,6 +2729,9 @@ class Disabling():
 
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
 
         conn.close()
         
@@ -2587,8 +2745,8 @@ class Disabling():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
 
     def disabling_condition_client_refused(self,start_date, end_date, output=None,program_id=None, department=None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -2891,6 +3049,15 @@ class StartDate():
                 AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
                 AND (Enrollment.EntryDate < '1915-01-01'
                 OR Enrollment.EntryDate > Exit.ExitDate)'''
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND (Enrollment.EntryDate < '1915-01-01'
+                OR Enrollment.EntryDate > Exit.ExitDate)'''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -2919,6 +3086,7 @@ class StartDate():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -2927,6 +3095,7 @@ class StartDate():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -2935,6 +3104,7 @@ class StartDate():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -2943,6 +3113,7 @@ class StartDate():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -2956,6 +3127,9 @@ class StartDate():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -2971,8 +3145,8 @@ class StartDate():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
 
 class ExitDate():
     def exit_date_data_accuracy(self,start_date, end_date, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
@@ -3177,6 +3351,30 @@ class HOH():
                             AND Enrollment.RelationshipToHoH = 1 
                             AND Enrollment.PersonalID != Enrollment.PersonalID
                         )))'''
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND ((Enrollment.RelationshipToHoH=99 OR Enrollment.RelationshipToHoH IS NULL) 
+                OR 
+                    (Enrollment.RelationshipToHoH != 1 AND NOT EXISTS (
+                            SELECT 1 
+                            FROM Enrollment 
+                            WHERE Enrollment.HouseholdID = Enrollment.HouseholdID 
+                            AND Enrollment.RelationshipToHoH = 1 
+                        )) 
+                    OR (Enrollment.RelationshipToHoH = 1 
+                        AND EXISTS (
+                            SELECT 1 
+                            FROM Enrollment
+                            WHERE Enrollment.HouseholdID = Enrollment.HouseholdID 
+                            AND Enrollment.RelationshipToHoH = 1 
+                            AND Enrollment.PersonalID != Enrollment.PersonalID
+                        )))'''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -3205,6 +3403,7 @@ class HOH():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -3213,6 +3412,7 @@ class HOH():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -3221,6 +3421,7 @@ class HOH():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -3229,6 +3430,7 @@ class HOH():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -3242,6 +3444,9 @@ class HOH():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -3257,8 +3462,8 @@ class HOH():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
         
     def HoH_missing(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -3482,6 +3687,18 @@ class Location():
                 AND  ((Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NULL) 
                 OR (Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NOT NULL AND Enrollment.EnrollmentCoC NOT IN 
                         ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-606', 'CA-612', 'CA-614', 'CA-607')))'''
+                        
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE Enrollment.EntryDate <= ? 
+                AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
+                AND  ((Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NULL) 
+                OR (Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NOT NULL AND Enrollment.EnrollmentCoC NOT IN 
+                        ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-606', 'CA-612', 'CA-614', 'CA-607')))'''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -3510,6 +3727,7 @@ class Location():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -3518,6 +3736,7 @@ class Location():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -3526,6 +3745,7 @@ class Location():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -3534,6 +3754,7 @@ class Location():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -3547,6 +3768,9 @@ class Location():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -3562,8 +3786,8 @@ class Location():
                     return 0
             else:
                 return None
-        elif output=="count":
-            return total_enrollments-total_score
+        elif output=="list":
+            return pt_list
         
     def enrollment_coc_missing(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         conn = sqlite3.connect(db_name)
@@ -3775,6 +3999,14 @@ class Destination():
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
                 WHERE (Exit.ExitDate <= ? AND Exit.ExitDate >= ?)
                 AND  (Exit.Destination IN (8,9) OR (Exit.Destination=30 OR Exit.Destination IS NULL OR Exit.Destination =99)) '''
+        sql_list = '''
+            SELECT DISTINCT Enrollment.PersonalID
+                FROM Enrollment
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+                INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+                INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
+                WHERE (Exit.ExitDate <= ? AND Exit.ExitDate >= ?)
+                AND  (Exit.Destination IN (8,9) OR (Exit.Destination=30 OR Exit.Destination IS NULL OR Exit.Destination =99)) '''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -3801,6 +4033,7 @@ class Destination():
         if program_id is not None:
             placeholders = ','.join(['?' for _ in program_id])
             sql += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
             filter_params.extend(program_id)
@@ -3809,6 +4042,7 @@ class Destination():
         if department is not None:
             placeholders = ','.join(['?' for _ in department])
             sql += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
             filter_params.extend(department)
@@ -3817,6 +4051,7 @@ class Destination():
         if region is not None:
             placeholders = ','.join(['?' for _ in region])
             sql += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
             filter_params.extend(region)
@@ -3825,6 +4060,7 @@ class Destination():
         if program_type is not None:
             placeholders = ','.join(['?' for _ in program_type])
             sql += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_list += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
             filter_params.extend(program_type)
@@ -3838,6 +4074,9 @@ class Destination():
         
         c.execute(sql_active_non_outreach, filter_params)
         total_non_outreach = c.fetchone()[0]
+        
+        c.execute(sql_list, filter_params)
+        pt_list = c.fetchall()
         
         conn.close()
 
@@ -3853,8 +4092,8 @@ class Destination():
                     return 0
             else:
                 return None
-        elif output =="count":
-            return total_enrollments-total_score
+        elif output =="list":
+            return pt_list
     
     def destination_client_refused_doesnt_know(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         #this should include just leavers
@@ -8964,16 +9203,16 @@ import numpy as np
 from matplotlib.ticker import PercentFormatter
 def line_chart_specific_days(function, filename):
     department_colors = {
-    'San Diego': 'red',
-    'Santa Barbara': 'blue',
-    'Orange County': 'green',
-    'Santa Clara': 'orange',
-    'Families': 'purple',
-    'Metro LA': 'brown',
-    'Permanent Supportive Services': 'pink',
-    'South County': 'cyan',
-    'Veterans': 'magenta',
-    'West LA': 'gray',
+    'San Diego': '#FFB7B2',
+    'Santa Barbara': '#FFDAC1',
+    'Orange County': '#E2F0CB',
+    'Santa Clara': '#B5EAD7',
+    'Families': '#C7CEEA',
+    'Metro LA': '#E6C8FE',
+    'Permanent Supportive Services': '#8097BA',
+    'South County': '#F3D88E',
+    'Veterans': '#A7D1AD',
+    'West LA': '#A7D1D1',
     }
 
     days_of_interest = [1, 4, 7, 11, 14]
@@ -9004,7 +9243,7 @@ def line_chart_specific_days(function, filename):
     for d, values in results_by_department.items():
         ax.plot(days_of_interest, values, linestyle='-', label=f'{d}', linewidth=0.5, markersize=2, color=department_colors[d])
 
-    ax.plot(days_of_interest, agency_results, marker='o', linestyle='-', label='Agency', linewidth=1, markersize=2, color='black')
+    ax.plot(days_of_interest, agency_results, linestyle='-', label='Agency', linewidth=.5, markersize=2, color='red')
     ax.axhline(0, color='white', linestyle='--')
 
     # Set x-axis tick labels with font size
@@ -9021,52 +9260,10 @@ def line_chart_specific_days(function, filename):
     # Save the plot as an image
     plt.savefig(filename, bbox_inches='tight')
     plt.close()
+    #plt.show()
     
 #print(line_chart_specific_days(Timeliness.percent_start_records_created_within_x_days,'entry_timeliness.png'))
 
-def line_chart_specific_days_overall(function, filename, department):
-    days_of_interest = [1, 4, 7, 11, 14]
-
-    # Create an instance of the class containing the method
-    timeliness_instance = Timeliness()
-
-    # Collect results for the specific days
-    results_by_department = []
-    agency_results = []
-
-    for days in days_of_interest:
-        parameters = {"start_date": "2024-01-01", "end_date": "2024-01-31", "days": days}
-        number = function(timeliness_instance, **parameters)
-        agency_results.append(number)
-        parameters.update({"department": [department]})
-        dept_numbers = [function(timeliness_instance, **parameters)]
-        results_by_department.append(dept_numbers)  # Use extend instead of append
-
-    # Create the line plot
-    width = 3.625
-    height = 2.167
-    image_dpi = 600
-    fig, ax = plt.subplots(figsize=(width, height), dpi=image_dpi)
-
-    for d, values in zip(days_of_interest, zip(*results_by_department)):
-        ax.plot(days_of_interest, values, marker='o', linestyle='-', label=f'{department}', linewidth=0.5, markersize=2)
-
-    # Plot the agency line
-    ax.plot(days_of_interest, agency_results, marker='o', linestyle='-', label='Agency', linewidth=0.5, markersize=2)
-
-    # Set x-axis tick labels with font size
-    ax.set_xticks(days_of_interest)
-    ax.set_xticklabels([f'Day {days}' for days in days_of_interest], fontsize=4, rotation=45, ha='right')
-
-    ax.yaxis.set_major_formatter(PercentFormatter(100))
-    ax.set_yticklabels([f'{tick * 100:.1f}%' for tick in ax.get_yticks()], fontsize=4)
-    ax.legend(loc='upper left', bbox_to_anchor=(1, 1), fontsize=4)
-
-    # Save the plot as an image
-    plt.savefig(filename, bbox_inches='tight')
-    plt.show()
-    
-#print(line_chart_specific_days_overall(Timeliness.percent_exit_records_created_within_x_days,'exit_overall_chart.png','Veterans' ))
 
 def personal_data_quality(start_date, end_date, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
     # NEEDS FURTHER VALIDATION
@@ -9197,63 +9394,59 @@ def personal_data_quality(start_date, end_date, program_id=None, department= Non
 
 
 
-start_date = datetime.strptime('2024-02-01', '%Y-%m-%d')  # Example start date
-end_date = datetime.strptime('2024-02-29', '%Y-%m-%d')    # Example end date
+def pt_list(start_date, end_date, type=None, program_id=None, department=None, region=None, program_type=None, db_name='merged_hmis2024.db'):
+    # Get name and SSN lists
+    name_list = name.name_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    ssn_list = ssn.ssn_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    dob_list=dob.dob_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    race_list=race.race_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    gender_list=gender.gender_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    
+    # Concatenate the two lists and convert to a set to remove duplicates
+    pii_list = set(name_list + ssn_list + dob_list + race_list + gender_list)
+    
+    # Get veteran and disabling condition lists
+    veteran_list = veteran.veteran_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    start_list=start.start_date_data_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    hoh_list=hoh.HoH_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    coc_list=location.enrollment_coc_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    disabling_list = disabling.disabling_condition_total_accuracy(start_date=start_date, end_date=end_date, output='list',program_id=program_id)
+    
+    universal_list=set(veteran_list +disabling_list + start_list + hoh_list + coc_list)
+    
+    destination_list=destination.destination_total_accuracy(start_date=start_date, end_date=end_date, output='list', program_id=program_id)
+    
+    income_list=set(destination_list)
+    # Create a dictionary to store IDs and their corresponding issues
+    id_issue_dict = {}
+    
+    for id in pii_list:
+        id_issue_dict[id] = 'personal_issue'
 
-# Initialize a list to store the date ranges
-date_range = []
+    for id in universal_list:
+        if id in id_issue_dict:
+            if id_issue_dict[id] == 'personal_issue':
+                id_issue_dict[id] = 'personal/universal'
+        else:
+            id_issue_dict[id] = 'universal_issue'
 
-for i in range(6):
-    current_month_start = start_date.replace(day=1) - timedelta(days=30*i)
-    current_month_end = current_month_start.replace(day=1) + timedelta(days=29)
-    date_range.append((current_month_start.strftime('%Y-%m-%d'), current_month_end.strftime('%Y-%m-%d')))
+    for id in income_list:
+        if id in id_issue_dict:
+            if id_issue_dict[id] == 'personal_issue':
+                id_issue_dict[id] = 'personal/income'
+            elif id_issue_dict[id] == 'universal_issue':
+                id_issue_dict[id] = 'universal/income'
+            elif id_issue_dict[id] == 'personal/universal':
+                id_issue_dict[id] = 'personal/universal/income'
+        else:
+            id_issue_dict[id] = 'income_issue'
 
-date_range.reverse()
+    
+    return id_issue_dict
 
-month_dict = {
-    1: 'Jan',
-    2: 'Feb',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'Sept',
-    10: 'Oct',
-    11: 'Nov',
-    12: 'Dec'
-}
 
-# Create empty lists to store the results and dates
-agency_results=[]
-results = []
-dates = []
 
-# Iterate through the date ranges and call the personal_data_quality function for each range
-for start_date, end_date in date_range:
-    agency_result = universal_data_quality(start_date=start_date, end_date=end_date)
-    result=universal_data_quality(start_date=start_date, end_date=end_date, department=['Veterans'])
-    results.append(result)
-    agency_results.append(agency_result)
-    date_obj = datetime.strptime(start_date, '%Y-%m-%d')
-    month_number = date_obj.month
-    year = date_obj.year
-    month_name = month_dict.get(month_number)
-    result = f'{month_name} {year}'
-    dates.append(result)
+#print(pt_list(start_date='2024-01-01',end_date='2024-01-31',department=['Veterans']))
+checkmark_text = "\u2713"
 
-result_percent=[result*100 for result in results]
-agency_percent=[agency_result*100 for agency_result in agency_results]
-# Plot the results
-plt.plot(dates, result_percent,marker='o',label='Veterans')
-plt.plot(dates, agency_percent, marker='o',label='Agency')
-plt.ylim(0,100)
-plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
-plt.title('Personal Data Quality Over 6 Months')
-plt.xticks()  # Rotate x-axis labels for better readability
-plt.legend()
-#plt.grid(True)
-plt.tight_layout()  # Adjust layout to prevent overlapping labels
-#plt.show()
-
+#print(checkmark_text)

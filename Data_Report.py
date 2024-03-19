@@ -165,16 +165,13 @@ class QuarterlyReports:
             self.cadence_short_name = datetime.strptime(self.cadence_short_name, "%B").strftime("%b")
 
         if report_type == "Executive Summary":
-            print("Begining Executive Summary")
+            print("Beginning Executive Summary")
             self.executiveReport()
         elif report_type == "Quarterly":
-            print(f"Begining Quarterly Report for {self.division_name}")
+            print(f"Beginning Quarterly Report for {self.division_name}")
             self.quarterlyReport(self.division_name)
-        elif report_type == "Department":
-            print(f"Begining Department Report for {self.division_name}")
-            self.departmentReport(self.division_name)
         else:
-            print(f"Begining Monthly Report for {self.division_name}")
+            print(f"Beginning Monthly Report for {self.division_name}")
             self.monthlyReport(self.division_name)
         
         global report_name
@@ -226,26 +223,6 @@ class QuarterlyReports:
         self.allAgency()
         self.walkerGrid() 
         
-
-    def departmentReport(self, department):
-        
-        self.quarterlyTitlePage()
-        
-
-        self.glossary()
-        
-        self.allAgency()
-        #self.walkerGrid() 
-        
-        
-        for Region, DeptDict in self.master_dict.items():
-            for Dept, ProgTypeDict in DeptDict.items():
-                if Dept==department:
-                    self.division(department=Dept) 
-                    self.programPagesTitlePage(department)
-                    for ProgType, ProgDict in ProgTypeDict.items():
-                       for Prog, MergedIDDict in ProgDict.items():
-                            self.programPage(ProgType, Prog, MergedIDDict)  
         
     def monthlyReport(self, division):
         self.monthlyTitlePage()
@@ -299,30 +276,30 @@ class QuarterlyReports:
                                     self.programPage(Dept,ProgType, Prog, MergedIDDict)
                                         
     def quarterlyTitlePage(self):
-        drawing = Drawing(width=inch*4.75, height=inch*7)
-        rectangle = Rect(0, inch*3, inch, inch*7.75)
-        rectangle.fillColor = rf.PATHBlue
-        rectangle.strokeColor = rf.PATHBlue
-        rectangle.strokeWidth = 0
-        drawing.add(rectangle)
+        drawing = Drawing(width=inch*4.75, height=inch*6)
+        circle = Circle(inch*2.5, inch*1.9, inch*1.3)
+        circle.fillColor = rf.PATHLightBlue
+        circle.strokeColor = rf.PATHLightBlue
+        circle.strokeWidth = 0
+        drawing.add(circle)
         
-        rectangle = Rect(inch*1.25,inch,inch, inch*7.75)
-        rectangle.fillColor = rf.PATHRed
-        rectangle.strokeColor = rf.PATHRed
-        rectangle.strokeWidth = 0
-        drawing.add(rectangle)
+        circle = Circle(inch*.75,inch*4,inch*1.5)
+        circle.fillColor = rf.PATHLightRed
+        circle.strokeColor = rf.PATHLightRed
+        circle.strokeWidth = 0
+        drawing.add(circle)
 
-        rectangle = Rect(inch*2.5,0,inch, inch*7.75)
-        rectangle.fillColor = rf.PATHGreen
-        rectangle.strokeColor = rf.PATHGreen
-        rectangle.strokeWidth = 0
-        drawing.add(rectangle)
+        circle = Circle(inch*3,inch*6.5,inch*1.9)
+        circle.fillColor = rf.PATHLightGreen
+        circle.strokeColor = rf.PATHLightGreen
+        circle.strokeWidth = 0
+        drawing.add(circle)
 
-        rectangle = Rect(inch*3.75,inch*1.5,inch, inch*7.75)
-        rectangle.fillColor = rf.PATHPurple
-        rectangle.strokeColor = rf.PATHPurple
-        rectangle.strokeWidth = 0
-        drawing.add(rectangle)
+        circle = Circle(inch*5,inch*.1,inch*2)
+        circle.fillColor = rf.PATHLightPurple
+        circle.strokeColor = rf.PATHLightPurple
+        circle.strokeWidth = 0
+        drawing.add(circle)
 
         drawing.hAlign = 'CENTER'
 
@@ -349,6 +326,7 @@ class QuarterlyReports:
         if title == "Permanent Supportive Services":
             title = "PSS"
 
+        
         titleLabelText = Paragraph(f"{title}",rf.titlePageStyle)
         self.elements.append(titleLabelText)   
 
@@ -835,9 +813,9 @@ class QuarterlyReports:
                 "","", "", "", ""] ] # Second row
             
             income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(agency_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStylegray),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStylegray),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStylegray),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
+            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
 
             personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
             universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
@@ -940,11 +918,11 @@ class QuarterlyReports:
             exit_data.append([Paragraph("Department Timeliness", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(day_1_percentage_exit, rf.tableValuesStyle),Paragraph(day_4_percentage_exit, rf.tableValuesStyle),Paragraph(day_7_percentage_exit, rf.tableValuesStyle),Paragraph(day_11_percentage_exit, rf.tableValuesStyle),Paragraph(day_14_percentage_exit, rf.tableValuesStyle)])
             
             
-            filename="C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\entry_timeliness.png"
+            filename="C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\entry_timeliness.png"
             #self.linecharts(time.percent_start_records_created_within_x_days,filename)
             start_completion_plot=get_image(filename,width=5.5*inch)
             
-            filename="C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\PATH_db\\2024_database\\exit_timeliness.png"
+            filename="C:\\Users\\MichelleS\\OneDrive - PATH\\Desktop\\Data Quality\\data_quality\\exit_timeliness.png"
             #self.linecharts(time.percent_exit_records_created_within_x_days,filename)
             exit_completion_plot=get_image(filename,width=5.5*inch)
             
@@ -1393,9 +1371,9 @@ class QuarterlyReports:
                 "","", "", "", ""] ] # Second row
             
             income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
+            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
 
             personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
             universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
@@ -1424,8 +1402,14 @@ class QuarterlyReports:
                 img = utils.ImageReader(path)
                 iw, ih = img.getSize()
                 aspect = ih / float(iw)
-                return Image(path, width=width, height=(width * aspect)*.9)
+                return Image(path, width=width, height=(width * aspect)*.8)
 
+            day_1_threshold="{:.1%}".format(0.75)
+            day_4_threshold="{:.1%}".format(0.80)
+            day_7_threshold="{:.1%}".format(0.85)
+            day_11_threshold="{:.1%}".format(0.90)
+            day_14_threshold="{:.1%}".format(0.95)
+            
             time=dq.Timeliness()
             ##time-start
             total_1_day = time.percent_start_records_created_within_x_days(**parameters, days=1)
@@ -1440,18 +1424,18 @@ class QuarterlyReports:
             day_11_percentage = "{:.1%}".format(total_11_day)
             day_14_percentage = "{:.1%}".format(total_14_day)
             
-            header_text = ["Record Creation - Project Start","%"]
+            header_text = ["Record Creation - Project Start","%","Goal"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
 
             creation_data = [formatted_header_text]
 
-            creation_data.append([Paragraph("Created within 1 day", rf.tableTextStyle), Paragraph(day_1_percentage, rf.textColor(day_1_percentage,0.75))])
-            creation_data.append([Paragraph("Created within 4 days", rf.tableTextStyle),Paragraph(day_4_percentage, rf.textColor(day_4_percentage,0.80))])
-            creation_data.append([Paragraph("Created within 7 days", rf.tableTextStyle), Paragraph(day_7_percentage, rf.textColor(day_7_percentage,0.85))])
-            creation_data.append([Paragraph("Created within 11 days", rf.tableTextStyle),Paragraph(day_11_percentage, rf.textColor(day_11_percentage,0.90))])
-            creation_data.append([Paragraph("Created within 14 days", rf.tableTextStyle),Paragraph(day_14_percentage, rf.textColor(day_14_percentage,0.95))])
+            creation_data.append([Paragraph("Created within 1 day", rf.tableTextStyle), Paragraph(day_1_percentage, rf.textColor(day_1_percentage,0.75)),Paragraph(day_1_threshold, rf.tableTextStyle) ])
+            creation_data.append([Paragraph("Created within 4 days", rf.tableTextStyle),Paragraph(day_4_percentage, rf.textColor(day_4_percentage,0.80)),Paragraph(day_4_threshold, rf.tableTextStyle)])
+            creation_data.append([Paragraph("Created within 7 days", rf.tableTextStyle), Paragraph(day_7_percentage, rf.textColor(day_7_percentage,0.85)),Paragraph(day_7_threshold, rf.tableTextStyle)])
+            creation_data.append([Paragraph("Created within 11 days", rf.tableTextStyle),Paragraph(day_11_percentage, rf.textColor(day_11_percentage,0.90)),Paragraph(day_11_threshold, rf.tableTextStyle)])
+            creation_data.append([Paragraph("Created within 14 days", rf.tableTextStyle),Paragraph(day_14_percentage, rf.textColor(day_14_percentage,0.95)),Paragraph(day_14_threshold, rf.tableTextStyle)])
 
-            creation_table= Table(creation_data, colWidths=[3*inch,.5*inch], rowHeights=[inch/5]*len(creation_data),style=rf.demosTableStyle)
+            creation_table= Table(creation_data, colWidths=[2.3*inch,.7*inch,.5*inch], rowHeights=[inch/5]*len(creation_data),style=rf.demosTableStyle)
             
             ##time-exit
             total_1_day_exit = time.percent_exit_records_created_within_x_days(**parameters, days=1)
@@ -1466,30 +1450,30 @@ class QuarterlyReports:
             day_11_percentage_exit = "{:.1%}".format(total_11_day_exit)
             day_14_percentage_exit = "{:.1%}".format(total_14_day_exit)
 
-            header_text = ["Record Creation - Project Exit","%"]
+            header_text = ["Record Creation - Project Exit","%","Goal"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
             exit_data = [formatted_header_text]
 
-            exit_data.append([Paragraph("Created within 1 day", rf.tableTextStyle), Paragraph(day_1_percentage_exit, rf.textColor(day_1_percentage_exit,0.75))])
-            exit_data.append([Paragraph("Created within 4 days", rf.tableTextStyle),Paragraph(day_4_percentage_exit, rf.textColor(day_4_percentage_exit, 0.80))])
-            exit_data.append([Paragraph("Created within 7 days", rf.tableTextStyle), Paragraph(day_7_percentage_exit, rf.textColor(day_7_percentage_exit,0.85))])
-            exit_data.append([Paragraph("Created within 11 days", rf.tableTextStyle), Paragraph(day_11_percentage_exit, rf.textColor(day_11_percentage_exit,0.90))])
-            exit_data.append([Paragraph("Created within 14 days", rf.tableTextStyle),Paragraph(day_14_percentage_exit, rf.textColor(day_14_percentage_exit,0.95))])
+            exit_data.append([Paragraph("Created within 1 day", rf.tableTextStyle), Paragraph(day_1_percentage_exit, rf.textColor(day_1_percentage_exit,0.75)),Paragraph(day_1_threshold, rf.tableTextStyle)])
+            exit_data.append([Paragraph("Created within 4 days", rf.tableTextStyle),Paragraph(day_4_percentage_exit, rf.textColor(day_4_percentage_exit, 0.80)),Paragraph(day_4_threshold, rf.tableTextStyle)])
+            exit_data.append([Paragraph("Created within 7 days", rf.tableTextStyle), Paragraph(day_7_percentage_exit, rf.textColor(day_7_percentage_exit,0.85)),Paragraph(day_7_threshold, rf.tableTextStyle)])
+            exit_data.append([Paragraph("Created within 11 days", rf.tableTextStyle), Paragraph(day_11_percentage_exit, rf.textColor(day_11_percentage_exit,0.90)),Paragraph(day_11_threshold, rf.tableTextStyle)])
+            exit_data.append([Paragraph("Created within 14 days", rf.tableTextStyle),Paragraph(day_14_percentage_exit, rf.textColor(day_14_percentage_exit,0.95)),Paragraph(day_14_threshold, rf.tableTextStyle)])
             
-            exit_table = Table(exit_data, colWidths=[3*inch,.5*inch], rowHeights=[inch/5]*len(exit_data),style=rf.demosTableStyle)
+            exit_table = Table(exit_data, colWidths=[2.3*inch,.7*inch,.5*inch], rowHeights=[inch/5]*len(exit_data),style=rf.demosTableStyle)
             row1demotable = Table([[creation_table,exit_table]],style=rf.demoPageTableStyle)
             
             header_text = ["Average Days of Record Creation - Entry"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
             average_entry_data = [formatted_header_text]
-            average_entry_days="{:.2f}".format(time.record_creation_start_average(**parameters))
+            average_entry_days="{:.1f}".format(time.record_creation_start_average(**parameters))
             average_entry_data.append([Paragraph(f"{average_entry_days} days",rf.tableValuesStyleBig)])
             average_entry_table = Table(average_entry_data, colWidths=[3.5*inch], rowHeights=[inch/4]*len(average_entry_data),style=rf.demosTableStyle)
             
             header_text = ["Average Days of Record Creation - Exit"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
             average_exit_data = [formatted_header_text]
-            average_exit_days="{:.2f}".format(time.record_creation_exit_average(**parameters))
+            average_exit_days="{:.1f}".format(time.record_creation_exit_average(**parameters))
             average_exit_data.append([Paragraph(f"{average_exit_days} days",rf.tableValuesStyleBig)])
             average_exit_table = Table(average_exit_data, colWidths=[3.5*inch], rowHeights=[inch/4]*len(average_exit_data),style=rf.demosTableStyle)
             row2demotable = Table([[average_entry_table,average_exit_table]],style=rf.demoPageTableStyle)
@@ -1500,35 +1484,71 @@ class QuarterlyReports:
             self.elements.append(page1_demographics_table)
 
             
-    def walkerGrid(self,program_name=None,program_id=None):    
-
-        setup = {'Personal Data Quality': ['Name', 'SSN', 'DOB','Race','Gender'], 'Universal Data Quality': ['Veteran', 'Start Date','HoH','CoC Code','Disability'],
-                'Income & Housing Data Quality':['Destination','Income']}
-
+    def walkerGrid(self, program_name=None, program_id=None):    
+        parameters = {"start_date": self.start_date, "end_date": self.end_date} 
+        parameters.update({"program_id": [program_id]})
+                    
         self.elements.append(Paragraph(f"{program_name} DQ Participant List", rf.pageHeaderStyle))
+        #note=("The following contains a list of HMIS Unique IDs for participants with a data concern in either personal identifiable information, universal data elements, or income & housing information ", rf.noteStyle2)
+        #self.elements.append(note)
         self.elements.append(Spacer(0, inch/4))
+        
+        # Get participant list
+        pt = dq.pt_list(**parameters)
 
-        for category_name, data_elements in setup.items():
-            self.elements.append(Paragraph(category_name, rf.tableHeaderStyle))
-            table_headers = ['UID']
-            
-            # Assuming data_elements is a list of data for the current category
-            for data_element in data_elements:
-                # Append data_element to table_headers
-                table_headers.append(data_element)
+        # Define table headers
+        header_text = ["Unique ID", "Personal Data Quality", "Universal Data Quality","Income & Housing Data Quality"]
+        formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeaderPurple) for cell in header_text]
+        data = [formatted_header_text]
 
-            # Create and append the table row for each data element
-            table_headers_data = [[Paragraph(cell, rf.IndicSecondaryHeader) for cell in table_headers]]
-            table_header_table= [Table(table_headers_data, style=rf.AgencyIndicatorHeaderStyle,
-                                        colWidths=rf.walkerGridColWidths)]
-            final_table_data=[[table_header_table]]
+        checkmark_text = "\u2713"
+        
+        
+        tableTextStyleCenterGreen = ParagraphStyle('Table Text', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=green)
 
-        # Create a Table instance outside the loop to encompass all rows
-            all_cat_table = Table(final_table_data, style=rf.AgencyIndicatorTableStructureStyle)
-            self.elements.append(all_cat_table)
-            self.elements.append(Spacer(0, inch/10))
-    
-        self.elements.append(PageBreak())        
+        # Create and append table rows for each participant
+        for participant_id, issue_type in pt.items():
+            row_data = [Paragraph(participant_id[0], rf.tableTextStyleCenter), '', '', '']  # Initialize row data with empty strings
+            # Check the type of issue associated with the participant
+            if issue_type == 'personal_issue':
+                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed) 
+                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+            elif issue_type == 'universal_issue':
+                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)# Mark 'Universal' column with 'X'
+            elif issue_type == 'personal/universal':
+                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+            elif issue_type == 'personal/income':
+                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+            elif issue_type == 'universal/income':
+                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+            elif issue_type == 'income_issue':
+                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+            elif issue_type == 'personal/universal/income':
+                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+            # Append row data to table data
+            data.append(row_data)
+
+        # Create the table
+        table = Table(data, colWidths=[1.5*inch,1.6*inch,1.8*inch,2.3*inch], style=rf.ptTableStyle)
+
+        # Append the table to self.elements
+        self.elements.append(table)
+
+        self.elements.append(PageBreak())
+
     
     def division1(self, region=None, department=None,program_id=None):
 
@@ -1536,13 +1556,13 @@ class QuarterlyReports:
         
         self.elements.append(Paragraph(f"{department} Data Quality", rf.pageHeaderStyle))
         self.elements.append(Spacer(0,inch/6))
-        self.department_dataquality(department=department,program_id=program_id)
+        #self.department_dataquality(department=department,program_id=program_id)
         self.elements.append(Spacer(0,inch/15))
-        self.department_charts(department=department)
+        #self.department_charts(department=department)
         self.elements.append(PageBreak())
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle))
         self.elements.append(Spacer(0,inch/15))
-        self.department_timeliness(department=department,program_id=program_id)
+        #self.department_timeliness(department=department,program_id=program_id)
         self.elements.append(PageBreak())
         
         print(f"   Ending Region/Department Data Quality for {region,department}")
@@ -1558,10 +1578,10 @@ class QuarterlyReports:
     def division3(self,department=None,program_id=None):
         print(f"   Starting Region/Department Data Quality for {program_id}")
         
-        self.program_dataquality(department=department,program_id=program_id)
+        #self.program_dataquality(department=department,program_id=program_id)
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle2))
         self.elements.append(Spacer(0,inch/10))
-        self.program_timeliness(program_id=program_id)
+        #self.program_timeliness(program_id=program_id)
         self.elements.append(PageBreak())
 
 
@@ -1583,11 +1603,14 @@ class QuarterlyReports:
             self.elements.append(program_info_table)
             if PrimaryDataSystem != 'HMIS':
                 self.elements.append(Paragraph("Note: This is a non-HMIS program, numbers should be interpreted with caution.", rf.noteStyle))
-                
-            self.elements.append(Spacer(0,inch/8))
-            print("Loaded header:", MergedID)
-            self.division3(department,MergedID)
-            #self.division2(program_name,MergedID)
+                self.elements.append(Spacer(0,inch/8))
+                print("Loaded header:", MergedID)
+                self.division3(department,MergedID)
+            else:  
+                self.elements.append(Spacer(0,inch/8))
+                print("Loaded header:", MergedID)
+                self.division3(department,MergedID)
+                self.division2(program_name,MergedID)
             
     
     def returnFormattedFunctionData(self, indicator_name, parameters):

@@ -2,7 +2,7 @@ import os
 
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
-from reportlab.lib.colors import Color, gray, lightgrey, black, white,linen, green,lime,orange,yellow,orangered
+from reportlab.lib.colors import Color, gray, lightgrey, black, white,red,green
 from reportlab.lib.pagesizes import inch
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
@@ -23,23 +23,25 @@ pdfmetrics.registerFont(TTFont('OpenSansItalic', os.path.join(report.font_direct
 # Color definitions
 PATHBlue = Color((0.0/255), (174.0/255), (239.0/255), 1)
 PATHLightBlue = Color((178/255), (231/255), (250.0/255), 1)
+PATHBabyBlue = Color((178/255), (231/255), (250.0/255), 0.5)
 PATHPurple = Color((138.0/255), (40.0/255), (143.0/255), 1)
 PATHLightPurple = Color((220/255), (190/255), (221/255), 1)
 PATHRed = Color((237/255), (28/255), (36/255), 1)
 PATHLightRed = Color((250/255), (186/255), (189/255), 1)
 PATHGreen = Color((34.0/255), (178/255), (76/255), 1)
 PATHLightGreen = Color((188.0/255), (232.0/255), (201.0/255), 1)
+babygrey='#E5E4E2'
 
 def cellColor(value):
     numeric_accuracy = float(value.strip('%')) / 100.0  # Convert to a float between 0 and 1
     if numeric_accuracy == 1.0:
         return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#73FA0F')
     elif 1.0 >numeric_accuracy>=0.95:
-        return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#A8DB2C')
+        return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#D0FB0F')
     elif 0.95 >numeric_accuracy>=0.90:
         return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#F9F908')
     elif 0.90 >numeric_accuracy>=0.80:
-        return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#FB9101')
+        return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#FBBC01')
     else:
         return ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor='#FE1306')
 
@@ -68,6 +70,7 @@ programHeaderStyle = ParagraphStyle('Program Header', fontName="MontserratSemiBo
 tableHeaderStyle = ParagraphStyle('Table Header', fontName="Montserrat", fontSize=10, leading=15, alignment=TA_LEFT, borderWidth=0, textColor=PATHPurple)
 tableSubHeader = ParagraphStyle('Table Text', fontName="MontserratSemiBold", fontSize=8, leading=12, alignment=TA_LEFT, leftIndent=8)
 tableSecondaryHeader = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=8, leading=12, alignment=TA_CENTER)
+tableSecondaryHeaderPurple = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=10, leading=12, alignment=TA_CENTER,textColor=PATHPurple)
 tableSecondaryHeaderLeftBlue = ParagraphStyle('Table Text', fontName="OpenSansItalic", fontSize=8, leading=12, alignment=TA_LEFT,textColor=PATHBlue)
 tableSecondaryHeaderLeftPurple = ParagraphStyle('Table Text', fontName="OpenSansItalic", fontSize=8, leading=12, alignment=TA_LEFT,textColor=PATHPurple)
 tableSecondaryHeaderLeftGreen = ParagraphStyle('Table Text', fontName="OpenSansItalic", fontSize=8, leading=12, alignment=TA_LEFT,textColor=PATHGreen)
@@ -78,6 +81,7 @@ tableSecondaryHeader3 = ParagraphStyle('Table Text', fontName="OpenSans", fontSi
 tableSecondaryHeader4 = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=10, leading=12, alignment=TA_CENTER,textColor=PATHRed)
 tableSecondaryHeader5 = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=10, leading=12, alignment=TA_CENTER,textColor=PATHBlue)
 tableTextStyle = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=8, leading=12, alignment=TA_LEFT, borderWidth=4)
+tableTextStyleCenter = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4)
 tableValuesStyle = ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4)
 tableValuesStyleBig = ParagraphStyle('Table Values', fontName="OpenSans", fontSize=10, leading=12, alignment=TA_CENTER, borderWidth=4)
 tableValuesStylegray = ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor=lightgrey)
@@ -91,6 +95,10 @@ TOCSubSectionStyle = ParagraphStyle('TOCSubSectionStyle', fontName="Montserrat",
 TOCHeaderStyle = ParagraphStyle('TOCSectionStyle', fontName="Montserrat", fontSize=24, alignment=TA_CENTER)
 programsummarytitlePageStyle = ParagraphStyle('programsummarytitlePageStyle',fontName="Montserrat",fontSize=40, leading=35, alignment=TA_LEFT, justifyLastLine=1)
 noteStyle = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=6, leading=12, alignment=TA_RIGHT)
+noteStyle2 = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=8, leading=12, alignment=TA_LEFT)
+ComingSoonStyle = ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=10, alignment=TA_CENTER, borderWidth=4)
+tableTextStyleCenterRed = ParagraphStyle('Table Text', fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=red)
+tableTextStyleCenterGreen = ParagraphStyle('Table Text', fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=green)
 
 
 # Agency Indicator by Dept Table
@@ -117,49 +125,6 @@ functionNameStyle.wordWrap = 'CJK'
 
 
 # Table Styles
-progTypeIndicatorTableStyle = TableStyle([
-    ('BACKGROUND', (0, 1), (-1, -1), linen),  
-    ('LINEBELOW', (0, 1), (-1, 1), .2, gray),
-    ('LINEBELOW', (0, 2), (-1, 2), .2, gray),
-    ('LINEBELOW', (0, 3), (-1, 3), .2, gray),
-    ('LINEBELOW', (0, 4), (-1, 4), .2, gray),
-    ('LINEBELOW', (0, 5), (-1, 5), .2, gray),
-    ('LINEBELOW', (0, 6), (-1, 6), .2, gray),
-    ('LINEBELOW', (0, 7), (-1, 7), .2, gray),
-    
-    ('SPAN', (0, 0), (-1, 0)),
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-    ('VALIGN', (0, 0), (-1, -1), 'CENTER'),  
-    ('ALIGN', (1, 2), (-1, -1), 'CENTER'),
-    ('LINEBELOW', (0, -1), (-1, -1), .8, black),
-    ('LEFTPADDING', (0, 1), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0), 
-
-])
-
-AgencyIndicatorTableStyle = TableStyle([
-    ('LINEABOVE', (0, 0), (-1, 0), .5, black),
-    ('LINEBELOW', (0, -1), (-1, -1), .5, black),
-    
-    ('LINEBELOW', (0, 0), (-1, 0), .2, gray),
-    ('LINEBELOW', (0, 1), (-1, 1), .2, gray),
-    ('LINEBELOW', (0, 2), (-1, 2), .2, gray),
-    ('LINEBELOW', (0, 3), (-1, 3), .2, gray),
-    ('LINEBELOW', (0, 4), (-1, 4), .2, gray),
-    ('LINEBELOW', (0, 5), (-1, 5), .2, gray),
-    ('LINEBELOW', (0, 6), (-1, 6), .2, gray),
-    ('LINEBELOW', (0, 7), (-1, 7), .2, gray),
-
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  
-    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0), 
-])
-
 AgencyIndicatorTableStructureStyle = TableStyle([
     ('BACKGROUND', (0, 0), (-1, -1), lightgrey),
     ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  
@@ -185,62 +150,6 @@ AgencyIndicatorHeaderStyle = TableStyle([
 
 ])
 
-agencyIndicatorsByDeptRegionTableStyle = TableStyle([
-    ('BACKGROUND', (1, 0), (-1, 0), PATHLightPurple),  
-    ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    ('FONTNAME', (0, 0), (-1, 0), 'MontserratSemiBold'),
-    ('FONTSIZE', (1, 0), (-1, -1), 9),
-    ('BACKGROUND', (0, 1), (-1, -1), (1,1,1)),
-    ('GRID', (0, 1), (-1, -1), .3, gray),
-    ('GRID', (1, 0), (-1, -1), .3, gray),
-    ('LINEABOVE', (1, 0), (-2, 0), 1, (0, 0, 0)),
-    ('LINEBELOW', (0, -1), (-2, -1), 1, (0, 0, 0)),
-    ('LINEBEFORE', (1, 0), (1, 0), 1, (0, 0, 0)),
-    ('LINEBEFORE', (0, 1), (0, -1), 1, (0, 0, 0)),
-    ('LINEABOVE', (0, 1), (0, 1), 1, (0, 0, 0)),
-    ('BACKGROUND', (0, 2), (-1, 2), lightgrey),
-    ('BOX', (-1, 0), (-1, -1), 2, PATHGreen), 
-    ('LEFTPADDING', (0, 0), (0, -1), 4),
-    ('RIGHTPADDING', (0, 0), (0, -1), 3),
-])
-
-agencyIndicatorsByDeptDeptTableStyle = TableStyle([
-    ('BACKGROUND', (0, 0), (-1, 0), PATHLightGreen),  
-    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    ('FONTNAME', (0, 0), (-1, 0), 'MontserratSemiBold'),        
-    ('FONTSIZE', (0, 0), (-1, -1), 9),
-    ('FONTNAME', (0, 1), (-1, -1), 'OpenSans'),
-    ('BACKGROUND', (0, 1), (-1, -1), (1,1,1)),
-    ('GRID', (0, 1), (-1, -1), .5, gray),
-    ('GRID', (1, 0), (-1, -1), .3, gray),
-    ('BOX', (0, 0), (-1, -1), 2, PATHGreen),
-    ('BACKGROUND', (0, 2), (-1, 2), lightgrey),  
-])
-
-agencyIndicatorsAllAgencyTableStyle = TableStyle([
-    ('BACKGROUND', (0, 0), (-1, 0), PATHLightBlue), 
-    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),    
-    ('FONTSIZE', (0, 0), (-1, -1), 9),
-    ('FONTNAME', (0, 0), (-1, -1), 'MontserratSemiBold'),
-    ('BACKGROUND', (0, 1), (-1, -1), (1,1,1)),
-    ('GRID', (0, 1), (-1, -1), .5, gray),
-    ('GRID', (1, 0), (-1, -1), .3, gray),
-    ('BOX', (0, 0), (-1, -1), 2, PATHBlue),
-    ('BACKGROUND', (0, 2), (-1, 2), lightgrey),  
-])
-
-
-agencyIndicatorsByDeptContainerTableStyle = TableStyle([
-    ('LINEBELOW', (1, 0), (-3, 0), 1, PATHGreen, None, (1,2)),
-    ('LINEABOVE', (1, 0), (-3, 0), 1, PATHGreen, None, (1,2)),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
-])
 
 
 demosTableStyle = TableStyle([
@@ -265,6 +174,13 @@ demosTableStyle = TableStyle([
     ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white,white]),
 ])
 
+ptTableStyle = TableStyle([
+    ('BACKGROUND', (0, 0), (-1, -1), white),
+    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
+    ('LINEBELOW', (0, -1), (-1, -1), .8, gray),
+    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [babygrey,white]),
+])
 
 demosTableStylewhite = TableStyle([
     ('BACKGROUND', (0, 0), (-1, -1), white),
@@ -288,64 +204,6 @@ demosTableStylewhite = TableStyle([
     ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white,white]),
 ])
 
-demosTableStyleblue= TableStyle([
-    ('BACKGROUND', (0, 0), (-1, -1), PATHLightBlue),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    ('LINEBELOW', (0, 1), (-1, 1), .2, gray),
-    ('LINEBELOW', (0, 2), (-1, 2), .2, gray),
-    ('LINEBELOW', (0, 3), (-1, 3), .2, gray),
-    ('LINEBELOW', (0, 4), (-1, 4), .2, gray),
-    ('LINEBELOW', (0, 5), (-1, 5), .2, gray),
-    ('LINEBELOW', (0, 6), (-1, 6), .2, gray),
-    ('LINEBELOW', (0, 7), (-1, 7), .2, gray),
-    ('LINEBELOW', (0, 8), (-1, 8), .2, gray),
-    ('LINEBELOW', (0, 9), (-1, 9), .2, gray),
-    ('LINEBELOW', (0, 10), (-1, 10), .2, gray),
-    ('LINEBELOW', (0, 11), (-1, 11), .2, gray),
-    ('LINEBELOW', (0, 12), (-1, 12), .2, gray),
-    ('LINEBELOW', (0, 13), (-1, 13), .2, gray),
-    ('LINEBELOW', (0, 14), (-1, 14), .2, gray),
-    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white,white]),
-])
-
-
-
-demosTableStyle2 = TableStyle([
-    ('BACKGROUND', (0, 0), (-1, -1),white),
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-    ('LINEBELOW', (0, -1), (-1, -1), .8, black),
-    ('VALIGN', (0, 0), (-1, -1), 'RIGHT'),
-    ('LINEBELOW', (0, 1), (-1, 1), .2, gray),
-    ('LINEBELOW', (0, 2), (-1, 2), .2, gray),
-    ('LINEBELOW', (0, 3), (-1, 3), .2, gray),
-    ('LINEBELOW', (0, 4), (-1, 4), .2, gray),
-    ('LINEBELOW', (0, 5), (-1, 5), .2, gray),
-    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [ lightgrey,white]),
-])
-
-
-dismergeTableStyle = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-    ])
-
-VetStatusTableStyle = TableStyle([
-    ('BACKGROUND', (0, 0), (-1, -1), PATHLightGreen),
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-
-    ])
-
-CHStatusTableStyle = TableStyle([
-    ('BACKGROUND', (0, 0), (-1, 0), PATHLightBlue),
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-
-    ])
-
-
 
 demoPageTableStyle = TableStyle([
     
@@ -356,19 +214,6 @@ demoPageTableStyle = TableStyle([
     ('TOPPADDING', (0, 0), (-1, -1), 0),
     ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
     ])
-
-demoPage2TableStyle = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ('SPAN', (0, 0), (-1, 0)),
-    ('SPAN', (0, 1), (-1, 1)),
-
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
-    ])
-
 
 
 progInfoTableStyle = TableStyle([
@@ -391,178 +236,7 @@ progInfoTableStyle = TableStyle([
 
     
 ])
-grantInfoTableStyle = TableStyle([
-    ('LINEABOVE', (0, 0), (-1, 0), .5, black),
-    ('FONT', (0, 0), (0, -1), 'OpenSans', 7),
-    ('FONT', (1, 0), (1, -1), 'OpenSansBold', 6),
-    ('ALIGN', (0, 0), (-1, -1), "LEFT"),
-    ('VALIGN', (0, 0), (-1, -1), "MIDDLE"),
-    ('LINEBELOW', (0, -1), (-1, -1), .5, black),
-])
 
-progAlignmentTableStyle = TableStyle([
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-    ('ALIGN', (0, 0), (0, 0), "LEFT"),
-    ('ALIGN', (1, 0), (1, 0), "RIGHT"),
-    ('VALIGN', (0, 0), (-1, -1), "TOP"),
-])
-
-programAgencyIndicatorsTableStyle = TableStyle([
-    ('SPAN', (0, 0), (-1, 0)),
-    ('ALIGN', (0, 0), (1, 0), 'CENTER'),
-    ('FONT', (0, 0), (-1, 0), 'MontserratSemiBold', 9),
-    ('BACKGROUND', (0, 0), (-1, 0), PATHLightGreen),
-    ('LINEABOVE', (0, 1), (-1, 1), .5, black),
-    ('FONT', (0, 1), (0, -1), 'OpenSans', 7),
-    ('FONT', (1, 0), (1, -1), 'OpenSansBold', 7),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
-    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white, lightgrey]),
-
-])
-
-ProgramLevelAgencyIndicatorsAlignmentTableStyle = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
-
-])
-
-PersonsServedTableStyle = TableStyle([
-    ('SPAN', (0, 0), (-1, 0)),
-    ('SPAN', (0, -1), (-1, -1)),
-    ('SPAN', (0, 4), (-1, 4)),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  
-
-    ('LEFTPADDING', (0, 0), (-1, -1), 2),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 2),
-    ('TOPPADDING', (0, -2), (-1, -2), 2),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
-
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-    ('LINEBELOW', (0, 1), (-1, 1), .3, black),  
-    ('LINEBELOW', (0, 3), (-1, 3), .3, black),  
-    ('LINEBELOW', (0, 4), (-1, 4), .3, black),  
-    ('LINEBELOW', (0, -2), (-1, -2), .8, black)
-
-
-])
-
-
-Row1SpacerStyle = TableStyle([
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-    ('LINEBELOW', (0, -2), (-1, -2), .8, black)
-
-])
-
-
-
-docTableStyle = TableStyle([
-    ('SPAN', (0, 0), (-1, 0)),
-    ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-    ('FONT', (0, 0), (-1, 0), 'MontserratSemiBold', 9),
-    ('BACKGROUND', (0, 0), (-1, 0), PATHLightGreen),
-    ('FONT', (0, -1), (0, -1), 'OpenSansBold', 8),
-    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-
-])
-
-
-InterimIndicatorsTableStyle = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (0, 0), (-1, -1), 'Center'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-    ('GRID', (0, 0), (-1, -1), .3, gray),
-
-])
-
-InterimIndicatorsTableRow1Style = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (0, 0), (-1, -1), 'Center'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-    ('GRID', (0, 0), (-1, -1), .3, gray),
-
-])
-
-ProgramLevelProgTypeIndicatorsTableStyle = TableStyle([
-    ('SPAN', (0, 0), (-1, 0)),  
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-
-    ('VALIGN', (0, 0), (-1, -1), 'CENTER'),      
-    ('LINEBELOW', (0, -1), (-1, -1), .8, black),  
-
-    
-    ('LEFTPADDING', (0, 1), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-
-    ])
-
-allCatTableStyle = TableStyle([
-    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
-    ('ALIGN', (0, 0), (0, -1), 'LEFT'),
-    ('LEFTPADDING', (0, 0), (-1, -1), 0),
-    ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-    ('TOPPADDING', (0, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
-
-
-    ])
-
-ProgramLevelContractIndicatorsTableStyle = TableStyle([
-    ('VALIGN', (-3, 1), (-1, -1), 'CENTER'),  
-    ('ALIGN', (-3, 0), (-1, 0), 'RIGHT'),  
-    ('SPAN', (-3, 0), (-1, 0)),  
-
-
-
-
-
-
-    ('LINEBELOW', (0, 0), (-1, 0), .8, black),
-    ('LINEBELOW', (0, -1), (-1, -1), .8, black),
-    
-    ('LEFTPADDING', (0, 1), (-1, -1), 0),
-
-    ('RIGHTPADDING', (1, 0), (-1, -1), 0),
-    ('TOPPADDING', (1, 0), (-1, -1), 0),
-    ('BOTTOMPADDING', (1, 0), (-1, -1), 0), 
-
-
-
-
-
-
-    ('LINEBELOW', (0, 1), (-1, 1), .2, gray),
-    ('LINEBELOW', (0, 2), (-1, 2), .2, gray),
-    ('LINEBELOW', (0, 3), (-1, 3), .2, gray),
-    ('LINEBELOW', (0, 4), (-1, 4), .2, gray),
-    ('LINEBELOW', (0, 5), (-1, 5), .2, gray),
-    ('LINEBELOW', (0, 6), (-1, 6), .2, gray),
-    ('LINEBELOW', (0, 7), (-1, 7), .2, gray),
-    ('LINEBELOW', (0, 8), (-1, 8), .2, gray),
-    ('LINEBELOW', (0, 9), (-1, 9), .2, gray),
-    ('LINEBELOW', (0, 10), (-1, 10), .2, gray),
-    ('LINEBELOW', (0, 11), (-1, 11), .2, gray),
-    ('LINEBELOW', (0, 12), (-1, 12), .2, gray),
-    ('LINEBELOW', (0, 13), (-1, 13), .2, gray),
-    ('LINEBELOW', (0, 14), (-1, 14), .2, gray),
-
-])
 
 ProgTypeIndicatorsAlignmentTableStyle = TableStyle([
     ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -590,7 +264,7 @@ GlossaryTableStyle = TableStyle([
 agencyIndicatorsByDeptRegionColWidths = [inch*1.5, inch*.4, inch*.4, inch*.4, inch*.4, inch*.4, inch*.4]
 agencyIndicatorsByDeptDeptColWidths = [inch*.4, inch*.4, inch*.4, inch*.4, inch*.4, inch*.4]
 agencyIndicatorsByDeptAllRowHeights = inch/2.75
-walkerGridColWidths = [.8*inch,1.8*inch,2.3*inch,.65*inch,.65*inch,.65*inch,.65*inch]
+walkerGridColWidths = [1.8*inch,1.8*inch,1.8*inch,1.8*inch]
 allIndicatorsRow1Height = [inch/4,inch/4,inch/4,inch/4,inch/4,inch/4,inch/4,inch/4]
 allIndicatorsRow2Height = [inch/4,inch/4,inch/4,inch/4,inch/4,None]
 

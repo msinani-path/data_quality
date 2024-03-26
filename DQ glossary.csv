@@ -1,36 +1,36 @@
 Category,Name,Definition
 Name,Client Doesn't Know or Refused,Name status is set as client doesn't know or client refused to answer
-Name,Information Missing,"First Name is blank, Last Name is blank,  Name status is set as data not collected"
+Name,Information Missing,"First name is blank, last name is blank , or name status is set as data not collected"
 Name,Date Issue,Partial name has been reported
 Social Security Number,Client Doesn't Know or Refused,SSN status is set as client doesn't know or client refused to answer
-Social Security Number,Information Missing,"Social Security Number is blank, SSN status is set as data not collected"
-Social Security Number,Date Issue,"Social Security Number entered violates rules for a valid SSN, Approximate  or partial SSN has been reported"
+Social Security Number,Information Missing,Social security number is blank or social security number status is set as data not collected
+Social Security Number,Date Issue,"Social security number entered violates rules for a valid SSN, Approximate  or partial SSN has been reported"
 Date of Birth,Client Doesn't Know or Refused,Date of birth status is set as client doesn't know or client refused to answer
-Date of Birth,Information Missing,"Date of Birth is blank, Date of birth status is set as data not collected"
-Date of Birth,Date Issue,"Date of Birth is prior to 01/01/1915, Date of Birth is after entry date, partial DOB has been reported"
+Date of Birth,Information Missing,Date of birth is blank or date of birth status is set as data not collected
+Date of Birth,Date Issue,"Date of birth is prior to 01/01/1915, date of birth is after entry date, partial date of birth has been reported"
 "Race, Ethnicity, & Gender",Client Doesn't Know or Refused,"Race, ethnicity, or gender status is set as client doesn't know or client refused"
-"Race, Ethnicity, & Gender",Information Missing,"Race,ethnicity, or gender status is set as data noth collected"
-Veteran Status,Client Doesn't Know or Refused,Veteran status is set as client doesn't know or client refused to answer for adults
-Veteran Status,Information Missing,Veteran status is blank or set as data not collected for adults
+"Race, Ethnicity, & Gender",Information Missing,"Race, ethnicity, or gender status is set as data not collected"
+Veteran Status,Client Doesn't Know or Refused,Veteran status is set as client doesn't know or client refused to answer for adult clients
+Veteran Status,Information Missing,Veteran status is blank or set as data not collected for adult clients
 Veteran Status,Date Issue,Veteran status is 'yes' while a client's age is less than 18
 Project Start Date,Date Issue,Project entry date is prior to 01/01/1915
-Relationship to Head of Household,Information Missing,Relationship to Head of Household is blank
-Relationship to Head of Household,Date Issue,"No HoH is indicated for a household, more than one client is listed as HoH in a single household"
-Enrollment CoC,Information Missing,CoC Code for head of household is blank
-Enrollment CoC,Date Issue,"CoC Code for head of household is not blank, but does not match a valid HUD-defined CoC Code"
+Relationship to Head of Household,Information Missing,Relationship to head of household is blank
+Relationship to Head of Household,Date Issue,"No head of household is indicated for a household, more than one client is listed as head of household in a single household"
+Enrollment CoC,Information Missing,Continuum of care code for head of household is blank
+Enrollment CoC,Date Issue,"Continuum of care code for head of household is not blank, but does not match a valid HUD-defined continuum of care code"
 Disabling Condition,Client Doesn't Know or Refused,Disabling condition status is set as client doesn't know or client refused to answer
 Disabling Condition,Information Missing,Disabling condition status is set as data not collected
 Disabling Condition,Date Issue,"Disabling condition is set as 'no', but one or more disability types are selected as 'yes'"
 Destination,Client Doesn't Know or Refused,Client's exit destination is set as client does not know or client refused to answer
 Destination,Information Missing,"Client's exit destination is blank, set as data not collected, or no exit interview completed"
-Record Creation - Project Start,Timeliness,The percentage of records created within X days of a partiicpants entry date
-Record Creation- Project Exit,Timeliness,The percentage of records created within X days of a partiicpants exit date
-Income and Sources at Start,Client Doesn't Know or Refused,"At time of entry, Income from any source is set as client doesn't know or client refused to answer"
-Income and Sources at Start,Information Missing,"At time of entry, Income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the entry date, record states prescence of income but missing income source"
+Record Creation - Project Start,Timeliness,The percentage of records created within X days of a particpants entry date
+Record Creation- Project Exit,Timeliness,The percentage of records created within X days of a particpants exit date
+Income and Sources at Start,Client Doesn't Know or Refused,"At time of entry, income from any source is set as client doesn't know or client refused to answer"
+Income and Sources at Start,Information Missing,"At time of entry, income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the entry date, record states prescence of income but missing income source"
 Income and Sources at Start,Date Issue,"At time of entry, record states having income despite no identified sources or no income recorded but identified income sources"
-Income and Sources at Annual Assestment,Client Doesn't Know or Refused,"At time of annual assestment, Income from any source is set as client doesn't know or client refused to answer"
-Income and Sources at Annual Assestment,Information Missing,"At time of annual assestment, Income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the anniversary date, record states prescence of income but missing income source"
+Income and Sources at Annual Assestment,Client Doesn't Know or Refused,"At time of annual assestment, income from any source is set as client doesn't know or client refused to answer"
+Income and Sources at Annual Assestment,Information Missing,"At time of annual assestment, income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the anniversary date, record states prescence of income but missing income source"
 Income and Sources at Annual Assestment,Date Issue,"At time of annual assestment, record states having income despite no identified sources or no income recorded but identified income sources"
-Income and Sources at Exit,Client Doesn't Know or Refused,"At time of exit, Income from any source is set as client doesn't know or client refused to answer"
-Income and Sources at Exit,Information Missing,"At time of exit, Income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the exit date, record states prescence of income but missing income source"
+Income and Sources at Exit,Client Doesn't Know or Refused,"At time of exit, income from any source is set as client doesn't know or client refused to answer"
+Income and Sources at Exit,Information Missing,"At time of exit, income from any source is blank or set as data not collected, no record exists of income source with an information date equivilant to the exit date, record states prescence of income but missing income source"
 Income and Sources at Exit,Date Issue,"At time of exit, record states having income despite no identified sources or no income recorded but identified income sources"

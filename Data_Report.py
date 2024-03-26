@@ -553,7 +553,8 @@ class QuarterlyReports:
                 parameters["department"] = [d]
                 number = function(**parameters)
                 results_by_department[d].append(number)
-
+        print(results_by_department)
+        print(agency_results)
         # Create the line plot
         width = 3.625
         height = 2.167
@@ -779,7 +780,9 @@ class QuarterlyReports:
             refused_exit_income_percentage = "{:.1%}".format(1-client_refused_exit_income)
             #missing_exit_income_percentage = "{:.1%}".format(1-missing_exit_income)
             #issues_exit_income_percentage = "{:.1%}".format(1-issues_exit_income)
-
+            if department== ['Permanent Supportive Services']:
+                department=['PSS']
+                
             header_text = [f"{department} Clients: {department_count}", f"Agency Clients: {agency_count}", "Agency Accuracy","Dept. Accuracy", "Client Refused", "Missing", "Data Issues"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
 
@@ -793,8 +796,8 @@ class QuarterlyReports:
             personal_data.append([Paragraph("Name", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_name_percentage, rf.tableValuesStylegray),Paragraph(total_name_percentage,rf.cellColor(total_name_percentage)),Paragraph(refused_name_percentage, rf.tableValuesStyle),Paragraph(missing_name_percentage, rf.tableValuesStyle),Paragraph(issues_name_percentage, rf.tableValuesStyle)])
             personal_data.append([Paragraph("Social Security Number", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_ssn_percentage, rf.tableValuesStylegray),Paragraph(total_ssn_percentage, rf.cellColor(total_ssn_percentage)),Paragraph(refused_ssn_percentage, rf.tableValuesStyle),Paragraph(missing_ssn_percentage, rf.tableValuesStyle),Paragraph(issues_ssn_percentage, rf.tableValuesStyle)])
             personal_data.append([Paragraph("Date of Birth", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_dob_percentage, rf.tableValuesStylegray),Paragraph(total_dob_percentage, rf.cellColor(total_dob_percentage)),Paragraph(refused_dob_percentage, rf.tableValuesStyle),Paragraph(missing_dob_percentage, rf.tableValuesStyle),Paragraph(issues_dob_percentage, rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Race & Ethnicity", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_race_percentage, rf.tableValuesStylegray),Paragraph(total_race_percentage, rf.cellColor(total_race_percentage)),Paragraph(refused_percentage_race, rf.tableValuesStyle),Paragraph(missing_percentage_race, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Gender", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_gender_percentage, rf.tableValuesStylegray),Paragraph(total_gender_percentage, rf.cellColor(total_gender_percentage)),Paragraph(refused_gender_percentage, rf.tableValuesStyle),Paragraph(missing_gender_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
+            personal_data.append([Paragraph("Race & Ethnicity", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_race_percentage, rf.tableValuesStylegray),Paragraph(total_race_percentage, rf.cellColor(total_race_percentage)),Paragraph(refused_percentage_race, rf.tableValuesStyle),Paragraph(missing_percentage_race, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+            personal_data.append([Paragraph("Gender", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_gender_percentage, rf.tableValuesStylegray),Paragraph(total_gender_percentage, rf.cellColor(total_gender_percentage)),Paragraph(refused_gender_percentage, rf.tableValuesStyle),Paragraph(missing_gender_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
 
             universal_data = [ # First row
                 [Paragraph("Universal Data Quality", rf.tableSecondaryHeaderLeftPurple), 
@@ -802,9 +805,9 @@ class QuarterlyReports:
                 "","", "", "", ""] ] # Second row
             
             universal_data.append([Paragraph("Veteran Status", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph(agency_veteran_percentage, rf.tableValuesStylegray),Paragraph(total_veteran_percentage, rf.cellColor(total_veteran_percentage)),Paragraph(refused_veteran_percentage, rf.tableValuesStyle),Paragraph(missing_veteran_percentage, rf.tableValuesStyle),Paragraph(issues_veteran_percentage, rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Project Start Date", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_start_percentage, rf.tableValuesStylegray),Paragraph(total_start_percentage, rf.cellColor(total_start_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Head of Household", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_hoh_percentage, rf.tableValuesStylegray),Paragraph(total_hoh_percentage, rf.cellColor(total_hoh_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph(missing_hoh_percentage, rf.tableValuesStyle),Paragraph(issues_hoh_percentage, rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Continuum of Care", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_coc_percentage, rf.tableValuesStylegray),Paragraph(total_coc_percentage, rf.cellColor(total_coc_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph(missing_coc_percentage, rf.tableValuesStyle),Paragraph(issues_coc_percentage, rf.tableValuesStyle)])
+            universal_data.append([Paragraph("Project Start Date", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_start_percentage, rf.tableValuesStylegray),Paragraph(total_start_percentage, rf.cellColor(total_start_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+            universal_data.append([Paragraph("Head of Household", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_hoh_percentage, rf.tableValuesStylegray),Paragraph(total_hoh_percentage, rf.cellColor(total_hoh_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(missing_hoh_percentage, rf.tableValuesStyle),Paragraph(issues_hoh_percentage, rf.tableValuesStyle)])
+            universal_data.append([Paragraph("Continuum of Care", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_coc_percentage, rf.tableValuesStylegray),Paragraph(total_coc_percentage, rf.cellColor(total_coc_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(missing_coc_percentage, rf.tableValuesStyle),Paragraph(issues_coc_percentage, rf.tableValuesStyle)])
             universal_data.append([Paragraph("Disability Status", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(agency_disability_percentage, rf.tableValuesStylegray),Paragraph(total_disability_percentage, rf.cellColor(total_disability_percentage)),Paragraph(refused_disability_percentage, rf.tableValuesStyle),Paragraph(missing_disability_percentage, rf.tableValuesStyle),Paragraph(issues_disability_percentage, rf.tableValuesStyle)])
 
             income_data = [ # First row
@@ -812,10 +815,10 @@ class QuarterlyReports:
                 Paragraph("Applies To", rf.tableSecondaryHeaderLeftGreen), 
                 "","", "", "", ""] ] # Second row
             
-            income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(agency_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
-            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
-            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(agency_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
 
             personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
             universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
@@ -926,8 +929,8 @@ class QuarterlyReports:
             #self.linecharts(time.percent_exit_records_created_within_x_days,filename)
             exit_completion_plot=get_image(filename,width=5.5*inch)
             
-            creation_table= Table(creation_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
-            exit_table= Table(exit_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
+            creation_table= Table(creation_data,colWidths=[1.75*inch,1.25*inch,1*inch,1*inch,1*inch,1*inch,1*inch],style=rf.demosTableStyle)
+            exit_table= Table(exit_data,colWidths=[1.75*inch,1.25*inch,1*inch,1*inch,1*inch,1*inch,1*inch],style=rf.demosTableStyle)
             row1demotable = Table([[creation_table],[start_completion_plot],[exit_table],[exit_completion_plot]],style=rf.demoPageTableStyle)
             
             
@@ -985,6 +988,8 @@ class QuarterlyReports:
 
 
                 for start_date, end_date in date_range:
+                    parameters['start_date'] = start_date
+                    parameters['end_date'] = end_date
                     agency_pii = dq.personal_data_quality(**parameters)
                     agency_universal = dq.universal_data_quality(**parameters)
                     agency_pii_results.append(agency_pii)
@@ -1004,6 +1009,8 @@ class QuarterlyReports:
 
                     
                 for start_date, end_date in date_range:
+                    parameters['start_date'] = start_date
+                    parameters['end_date'] = end_date
                     pii_result=dq.personal_data_quality(**parameters)
                     pii_results.append(pii_result)
                     universal_result=dq.universal_data_quality(**parameters)
@@ -1017,8 +1024,8 @@ class QuarterlyReports:
                 
                 
                 # Universal
-                plt.plot(dates, universal_result_percent,marker='o',label=f'{department}',color=PATHBlue,linewidth=1, markersize=2)
-                plt.plot(dates, agency_universal_percent, marker='o',label='Agency',color=PATHPurple,linewidth=1,markersize=2)
+                plt.plot(dates, universal_result_percent,marker='o',label=f'{department}',color=PATHBlue,linewidth=.75, markersize=1.5)
+                plt.plot(dates, agency_universal_percent, marker='o',label='Agency',color=PATHPurple,linewidth=.75,markersize=1.5)
                 plt.ylim(0,100)
                 plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
                 plt.title('Universal Data Quality Over 6 Months',fontsize=6)
@@ -1037,7 +1044,7 @@ class QuarterlyReports:
                 img = utils.ImageReader(path)
                 iw, ih = img.getSize()
                 aspect = ih / float(iw)
-                return Image(path, width=width, height=(width * aspect)*1.4)
+                return Image(path, width=width, height=(width * aspect)*1.3)
             
             # Create the line plot
             width = 3.625
@@ -1058,7 +1065,6 @@ class QuarterlyReports:
                 date_range.append((current_month_start.strftime('%Y-%m-%d'), current_month_end.strftime('%Y-%m-%d')))
 
             date_range.reverse()
-
             month_dict = {
                 1: 'Jan',
                 2: 'Feb',
@@ -1085,6 +1091,9 @@ class QuarterlyReports:
 
 
             for start_date, end_date in date_range:
+                parameters['start_date'] = start_date
+                parameters['end_date'] = end_date
+
                 agency_pii = dq.personal_data_quality(**parameters)
                 agency_universal = dq.universal_data_quality(**parameters)
                 agency_pii_results.append(agency_pii)
@@ -1104,6 +1113,8 @@ class QuarterlyReports:
 
                 
             for start_date, end_date in date_range:
+                parameters['start_date'] = start_date
+                parameters['end_date'] = end_date
                 pii_result=dq.personal_data_quality(**parameters)
                 pii_results.append(pii_result)
                 universal_result=dq.universal_data_quality(**parameters)
@@ -1116,8 +1127,8 @@ class QuarterlyReports:
             agency_universal_percent=[agency_result*100 for agency_result in agency_universal_results]
 
             # PII
-            plt.plot(dates, pii_result_percent,marker='o',label=f'{department}',color=PATHBlue,linewidth=1, markersize=2)
-            plt.plot(dates, agency_pii_percent, marker='o',label='Agency',color=PATHPurple,linewidth=1,markersize=2)
+            plt.plot(dates, pii_result_percent,marker='o',label=f'{department}',color=PATHBlue,linewidth=.75, markersize=1.5)
+            plt.plot(dates, agency_pii_percent, marker='o',label='Agency',color=PATHPurple,linewidth=.75,markersize=1.5)
             plt.ylim(0,100)
             plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
             plt.title('Personal Data Quality Over 6 Months',fontsize=6)
@@ -1303,10 +1314,12 @@ class QuarterlyReports:
             total_destination_accuracy = destination.destination_total_accuracy(**parameters)
             client_refused_destination = destination.destination_client_refused_doesnt_know(**parameters)
             missing_destination = destination.destination_missing(**parameters)
-
+            
+    
             total_destination_percentage = "{:.1%}".format(total_destination_accuracy)
             refused_destination_percentage = "{:.1%}".format(1-client_refused_destination)
             missing_destination_percentage = "{:.1%}".format(1-missing_destination)
+            total_leavers=destination.number_leavers(**parameters)
             
             #total_start_income_accuracy = income.starting_income_total_accuracy(**parameters)
             client_refused_start_income= income.starting_income_client_refused(**parameters)
@@ -1337,7 +1350,9 @@ class QuarterlyReports:
             refused_exit_income_percentage = "{:.1%}".format(1-client_refused_exit_income)
             #missing_exit_income_percentage = "{:.1%}".format(1-missing_exit_income)
             #issues_exit_income_percentage = "{:.1%}".format(1-issues_exit_income)
-            
+            if department== ['Permanent Supportive Services']:
+                department=['PSS']
+                
             header_text = [f"Program Clients: {program_count}", f"{department} Clients: {dept_count}", "Department Accuracy","Program Accuracy", "Client Refused", "Missing", "Data Issues"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
 
@@ -1347,43 +1362,85 @@ class QuarterlyReports:
                 [Paragraph("Personal Data Quality", rf.tableSecondaryHeaderLeftBlue), 
                 Paragraph("Applies To", rf.tableSecondaryHeaderLeftBlue), 
                 "","", "", "", ""] ] # Second row
+            if program_count=="0":
+                personal_data.append([Paragraph("Name", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_name_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Social Security Number", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_ssn_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Date of Birth", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_dob_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Race & Ethnicity", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_race_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Gender", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_gender_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
 
-            personal_data.append([Paragraph("Name", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_name_percentage, rf.tableValuesStylegray),Paragraph(total_name_percentage, rf.cellColor(total_name_percentage)),Paragraph(refused_name_percentage, rf.tableValuesStyle),Paragraph(missing_name_percentage, rf.tableValuesStyle),Paragraph(issues_name_percentage, rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Social Security Number", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_ssn_percentage, rf.tableValuesStylegray),Paragraph(total_ssn_percentage, rf.cellColor(total_ssn_percentage),),Paragraph(refused_ssn_percentage, rf.tableValuesStyle),Paragraph(missing_ssn_percentage, rf.tableValuesStyle),Paragraph(issues_ssn_percentage, rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Date of Birth", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_dob_percentage, rf.tableValuesStylegray),Paragraph(total_dob_percentage, rf.cellColor(total_dob_percentage),),Paragraph(refused_dob_percentage, rf.tableValuesStyle),Paragraph(missing_dob_percentage, rf.tableValuesStyle),Paragraph(issues_dob_percentage, rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Race & Ethnicity", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_race_percentage, rf.tableValuesStylegray),Paragraph(total_race_percentage, rf.cellColor(total_race_percentage),),Paragraph(refused_percentage_race, rf.tableValuesStyle),Paragraph(missing_percentage_race, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            personal_data.append([Paragraph("Gender", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_gender_percentage, rf.tableValuesStylegray),Paragraph(total_gender_percentage, rf.cellColor(total_gender_percentage),),Paragraph(refused_gender_percentage, rf.tableValuesStyle),Paragraph(missing_gender_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
+                universal_data = [ # First row
+                    [Paragraph("Universal Data Quality", rf.tableSecondaryHeaderLeftPurple), 
+                    Paragraph("Applies To", rf.tableSecondaryHeaderLeftPurple), 
+                    "","", "", "", ""] ] # Second row
+                
+                universal_data.append([Paragraph("Veteran Status", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph(dept_veteran_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Head of Household", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_hoh_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Continuum of Care", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_coc_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Disability Status", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_disability_percentage, rf.tableValuesStylegray),Paragraph("No Clients", rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
 
-            universal_data = [ # First row
-                [Paragraph("Universal Data Quality", rf.tableSecondaryHeaderLeftPurple), 
-                Paragraph("Applies To", rf.tableSecondaryHeaderLeftPurple), 
-                "","", "", "", ""] ] # Second row
-            
-            universal_data.append([Paragraph("Veteran Status", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph(dept_veteran_percentage, rf.tableValuesStylegray),Paragraph(total_veteran_percentage, rf.cellColor(total_veteran_percentage)),Paragraph(refused_veteran_percentage, rf.tableValuesStyle),Paragraph(missing_veteran_percentage, rf.tableValuesStyle),Paragraph(issues_veteran_percentage, rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Project Start Date", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_start_percentage, rf.tableValuesStylegray),Paragraph(total_start_percentage, rf.cellColor(total_start_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Head of Household", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_hoh_percentage, rf.tableValuesStylegray),Paragraph(total_hoh_percentage, rf.cellColor(total_hoh_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph(missing_hoh_percentage, rf.tableValuesStyle),Paragraph(issues_hoh_percentage, rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Continuum of Care", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_coc_percentage, rf.tableValuesStylegray),Paragraph(total_coc_percentage, rf.cellColor(total_coc_percentage)),Paragraph("N/A", rf.tableValuesStyle),Paragraph(missing_coc_percentage, rf.tableValuesStyle),Paragraph(issues_coc_percentage, rf.tableValuesStyle)])
-            universal_data.append([Paragraph("Disability Status", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_disability_percentage, rf.tableValuesStylegray),Paragraph(total_disability_percentage, rf.cellColor(total_disability_percentage)),Paragraph(refused_disability_percentage, rf.tableValuesStyle),Paragraph(missing_disability_percentage, rf.tableValuesStyle),Paragraph(issues_disability_percentage, rf.tableValuesStyle)])
+                income_data = [ # First row
+                    [Paragraph("Income & Housing Data Quality", rf.tableSecondaryHeaderLeftGreen), 
+                    Paragraph("Applies To", rf.tableSecondaryHeaderLeftGreen), 
+                    "","", "", "", ""] ] # Second row
+                if total_leavers >0:
+                    income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                else:
+                    income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph('No Exits', rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+                income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+                income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
 
-            income_data = [ # First row
-                [Paragraph("Income & Housing Data Quality", rf.tableSecondaryHeaderLeftGreen), 
-                Paragraph("Applies To", rf.tableSecondaryHeaderLeftGreen), 
-                "","", "", "", ""] ] # Second row
-            
-            income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.tableValuesStyle)])
-            income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
-            income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
-            income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph("N/A", rf.ComingSoonStyle),Paragraph("N/A", rf.ComingSoonStyle)])
+                personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
+                universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
+                income_table=Table(income_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
+                row1demotable = Table([[personal_table],[universal_table],[income_table]],style=rf.demoPageTableStyle)
+                
+                page1_demographics = [[row1demotable]
+                                    ]
+                page1_demographics_table = Table(page1_demographics, style=rf.demoPageTableStyle)
+                self.elements.append(page1_demographics_table)
+            else:   
+                personal_data.append([Paragraph("Name", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_name_percentage, rf.tableValuesStylegray),Paragraph(total_name_percentage, rf.cellColor(total_name_percentage)),Paragraph(refused_name_percentage, rf.tableValuesStyle),Paragraph(missing_name_percentage, rf.tableValuesStyle),Paragraph(issues_name_percentage, rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Social Security Number", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_ssn_percentage, rf.tableValuesStylegray),Paragraph(total_ssn_percentage, rf.cellColor(total_ssn_percentage),),Paragraph(refused_ssn_percentage, rf.tableValuesStyle),Paragraph(missing_ssn_percentage, rf.tableValuesStyle),Paragraph(issues_ssn_percentage, rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Date of Birth", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_dob_percentage, rf.tableValuesStylegray),Paragraph(total_dob_percentage, rf.cellColor(total_dob_percentage),),Paragraph(refused_dob_percentage, rf.tableValuesStyle),Paragraph(missing_dob_percentage, rf.tableValuesStyle),Paragraph(issues_dob_percentage, rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Race & Ethnicity", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_race_percentage, rf.tableValuesStylegray),Paragraph(total_race_percentage, rf.cellColor(total_race_percentage),),Paragraph(refused_percentage_race, rf.tableValuesStyle),Paragraph(missing_percentage_race, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                personal_data.append([Paragraph("Gender", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_gender_percentage, rf.tableValuesStylegray),Paragraph(total_gender_percentage, rf.cellColor(total_gender_percentage),),Paragraph(refused_gender_percentage, rf.tableValuesStyle),Paragraph(missing_gender_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
 
-            personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
-            universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
-            income_table=Table(income_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
-            row1demotable = Table([[personal_table],[universal_table],[income_table]],style=rf.demoPageTableStyle)
-            
-            page1_demographics = [[row1demotable]
-                                ]
-            page1_demographics_table = Table(page1_demographics, style=rf.demoPageTableStyle)
-            self.elements.append(page1_demographics_table)
+                universal_data = [ # First row
+                    [Paragraph("Universal Data Quality", rf.tableSecondaryHeaderLeftPurple), 
+                    Paragraph("Applies To", rf.tableSecondaryHeaderLeftPurple), 
+                    "","", "", "", ""] ] # Second row
+                
+                universal_data.append([Paragraph("Veteran Status", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph(dept_veteran_percentage, rf.tableValuesStylegray),Paragraph(total_veteran_percentage, rf.cellColor(total_veteran_percentage)),Paragraph(refused_veteran_percentage, rf.tableValuesStyle),Paragraph(missing_veteran_percentage, rf.tableValuesStyle),Paragraph(issues_veteran_percentage, rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Project Start Date", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_start_percentage, rf.tableValuesStylegray),Paragraph(total_start_percentage, rf.cellColor(total_start_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Head of Household", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_hoh_percentage, rf.tableValuesStylegray),Paragraph(total_hoh_percentage, rf.cellColor(total_hoh_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(missing_hoh_percentage, rf.tableValuesStyle),Paragraph(issues_hoh_percentage, rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Continuum of Care", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_coc_percentage, rf.tableValuesStylegray),Paragraph(total_coc_percentage, rf.cellColor(total_coc_percentage)),Paragraph(" - ", rf.tableValuesStyle),Paragraph(missing_coc_percentage, rf.tableValuesStyle),Paragraph(issues_coc_percentage, rf.tableValuesStyle)])
+                universal_data.append([Paragraph("Disability Status", rf.tableTextStyle),Paragraph("All Clients", rf.tableTextStyle),Paragraph(dept_disability_percentage, rf.tableValuesStylegray),Paragraph(total_disability_percentage, rf.cellColor(total_disability_percentage)),Paragraph(refused_disability_percentage, rf.tableValuesStyle),Paragraph(missing_disability_percentage, rf.tableValuesStyle),Paragraph(issues_disability_percentage, rf.tableValuesStyle)])
+
+                income_data = [ # First row
+                    [Paragraph("Income & Housing Data Quality", rf.tableSecondaryHeaderLeftGreen), 
+                    Paragraph("Applies To", rf.tableSecondaryHeaderLeftGreen), 
+                    "","", "", "", ""] ] # Second row
+                if total_leavers >0:
+                    income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph(total_destination_percentage, rf.cellColor(total_destination_percentage)),Paragraph(refused_destination_percentage, rf.tableValuesStyle),Paragraph(missing_destination_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                else:
+                    income_data.append([Paragraph("Exit Destination", rf.tableTextStyle),Paragraph("All Exited Clients", rf.tableTextStyle),Paragraph(dept_destination_percentage, rf.tableValuesStylegray),Paragraph('No Exits', rf.tableValuesStylegray),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle),Paragraph(" - ", rf.tableValuesStyle)])
+                income_data.append([Paragraph("Income at Entry", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_start_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+                income_data.append([Paragraph("Income at Annual Assessment", rf.tableTextStyle),Paragraph("All Adult Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_annual_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+                income_data.append([Paragraph("Income at Exit", rf.tableTextStyle),Paragraph("All Adult Exited Clients", rf.tableTextStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph("Coming Soon", rf.ComingSoonStyle),Paragraph(refused_exit_income_percentage, rf.tableValuesStyle),Paragraph(" - ", rf.ComingSoonStyle),Paragraph(" - ", rf.ComingSoonStyle)])
+
+                personal_table = Table(personal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStyle)
+                universal_table=Table(universal_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
+                income_table=Table(income_data,colWidths=[1.75*inch,1.5*inch,1.1*inch,1*inch,.7*inch,.7*inch,.7*inch],style=rf.demosTableStylewhite)
+                row1demotable = Table([[personal_table],[universal_table],[income_table]],style=rf.demoPageTableStyle)
+                
+                page1_demographics = [[row1demotable]
+                                    ]
+                page1_demographics_table = Table(page1_demographics, style=rf.demoPageTableStyle)
+                self.elements.append(page1_demographics_table)
+            #if total_destination_accuracy ==0:
+                #self.elements.append(Paragraph("Program accuracy noted by a 'No Exits' indicates there were no exits within the reporting time therefore can not report on exit destination data quality ", rf.noteStyle))
     
     def program_timeliness(self, region=None, department=None,program_id=None):
             parameters = ({"start_date": self.start_date, "end_date": self.end_date})
@@ -1411,6 +1468,7 @@ class QuarterlyReports:
             day_14_threshold="{:.1%}".format(0.95)
             
             time=dq.Timeliness()
+            destination=dq.Destination()
             ##time-start
             total_1_day = time.percent_start_records_created_within_x_days(**parameters, days=1)
             total_4_day = time.percent_start_records_created_within_x_days(**parameters, days=4)
@@ -1467,14 +1525,20 @@ class QuarterlyReports:
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
             average_entry_data = [formatted_header_text]
             average_entry_days="{:.1f}".format(time.record_creation_start_average(**parameters))
-            average_entry_data.append([Paragraph(f"{average_entry_days} days",rf.tableValuesStyleBig)])
+            if average_entry_days!='0.0':
+                average_entry_data.append([Paragraph(f"{average_entry_days} days",rf.tableValuesStyleBig)])
+            else:
+                average_entry_data.append([Paragraph("No Clients Enrolled",rf.tableValuesStyleBig)])
             average_entry_table = Table(average_entry_data, colWidths=[3.5*inch], rowHeights=[inch/4]*len(average_entry_data),style=rf.demosTableStyle)
             
             header_text = ["Average Days of Record Creation - Exit"]
             formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeader) for cell in header_text]
             average_exit_data = [formatted_header_text]
             average_exit_days="{:.1f}".format(time.record_creation_exit_average(**parameters))
-            average_exit_data.append([Paragraph(f"{average_exit_days} days",rf.tableValuesStyleBig)])
+            if average_exit_days!='0.0':
+                average_exit_data.append([Paragraph(f"{average_exit_days} days",rf.tableValuesStyleBig)])
+            else:
+                average_exit_data.append([Paragraph("No Program Exits",rf.tableValuesStyleBig)])
             average_exit_table = Table(average_exit_data, colWidths=[3.5*inch], rowHeights=[inch/4]*len(average_exit_data),style=rf.demosTableStyle)
             row2demotable = Table([[average_entry_table,average_exit_table]],style=rf.demoPageTableStyle)
             
@@ -1487,67 +1551,63 @@ class QuarterlyReports:
     def walkerGrid(self, program_name=None, program_id=None):    
         parameters = {"start_date": self.start_date, "end_date": self.end_date} 
         parameters.update({"program_id": [program_id]})
-                    
-        self.elements.append(Paragraph(f"{program_name} DQ Participant List", rf.pageHeaderStyle))
-        #note=("The following contains a list of HMIS Unique IDs for participants with a data concern in either personal identifiable information, universal data elements, or income & housing information ", rf.noteStyle2)
-        #self.elements.append(note)
-        self.elements.append(Spacer(0, inch/4))
-        
-        # Get participant list
-        pt = dq.pt_list(**parameters)
+        program_count="{:,}".format(dq.active_clients(**parameters)) 
+        if program_count!='0':           
+            self.elements.append(Paragraph(f"{program_name} Data Quality Participant Concern List", rf.pageHeaderStylesmall))
+            #self.elements.append(Spacer(0, inch/4))
+            
+            # Get participant list
+            pt = dq.pt_list(**parameters)
 
-        # Define table headers
-        header_text = ["Unique ID", "Personal Data Quality", "Universal Data Quality","Income & Housing Data Quality"]
-        formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeaderPurple) for cell in header_text]
-        data = [formatted_header_text]
+            # Define table headers
+            header_text = ["Unique ID", "Personal Data Quality", "Universal Data Quality","Income & Housing Data Quality"]
+            formatted_header_text = [Paragraph(cell, rf.tableSecondaryHeaderPurple) for cell in header_text]
+            data = [formatted_header_text]
 
-        checkmark_text = "\u2713"
-        
-        
-        tableTextStyleCenterGreen = ParagraphStyle('Table Text', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=green)
+            # Create and append table rows for each participant
+            for participant_id, issue_type in pt.items():
+                row_data = [Paragraph(participant_id[0], rf.tableTextStyleCenter), '', '', '']  # Initialize row data with empty strings
+                # Check the type of issue associated with the participant
+                if issue_type == 'personal_issue':
+                    row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed) 
+                    row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                elif issue_type == 'universal_issue':
+                    row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)# Mark 'Universal' column with 'X'
+                elif issue_type == 'personal/universal':
+                    row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                elif issue_type == 'personal/income':
+                    row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                elif issue_type == 'universal/income':
+                    row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                elif issue_type == 'income_issue':
+                    row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
+                    row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                elif issue_type == 'personal/universal/income':
+                    row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                    row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
+                # Append row data to table data
+                data.append(row_data)
 
-        # Create and append table rows for each participant
-        for participant_id, issue_type in pt.items():
-            row_data = [Paragraph(participant_id[0], rf.tableTextStyleCenter), '', '', '']  # Initialize row data with empty strings
-            # Check the type of issue associated with the participant
-            if issue_type == 'personal_issue':
-                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed) 
-                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-            elif issue_type == 'universal_issue':
-                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)# Mark 'Universal' column with 'X'
-            elif issue_type == 'personal/universal':
-                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[3] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-            elif issue_type == 'personal/income':
-                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
-            elif issue_type == 'universal/income':
-                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
-            elif issue_type == 'income_issue':
-                row_data[1] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[2] = Paragraph("✔", rf.tableTextStyleCenterGreen)
-                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
-            elif issue_type == 'personal/universal/income':
-                row_data[1] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[2] = Paragraph('✘', rf.tableTextStyleCenterRed)
-                row_data[3] = Paragraph('✘', rf.tableTextStyleCenterRed)
-            # Append row data to table data
-            data.append(row_data)
+            # Create the table
+            table = Table(data, colWidths=[1.5*inch,1.6*inch,1.8*inch,2.3*inch], style=rf.ptTableStyle)
 
-        # Create the table
-        table = Table(data, colWidths=[1.5*inch,1.6*inch,1.8*inch,2.3*inch], style=rf.ptTableStyle)
+            # Append the table to self.elements
+            self.elements.append(table)
+            note_text = "**ThIs list contains HMIS Unique IDs for participants with data concerns in either personal identifiable information, universal data elements, or income & housing information.**"
+            self.elements.append(Paragraph(note_text, rf.noteStyle2))
 
-        # Append the table to self.elements
-        self.elements.append(table)
-
-        self.elements.append(PageBreak())
+            self.elements.append(PageBreak())
 
     
     def division1(self, region=None, department=None,program_id=None):
@@ -1556,18 +1616,19 @@ class QuarterlyReports:
         
         self.elements.append(Paragraph(f"{department} Data Quality", rf.pageHeaderStyle))
         self.elements.append(Spacer(0,inch/6))
-        #self.department_dataquality(department=department,program_id=program_id)
+        self.department_dataquality(department=department,program_id=program_id)
         self.elements.append(Spacer(0,inch/15))
-        #self.department_charts(department=department)
+        self.department_charts(department=department)
         self.elements.append(PageBreak())
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle))
         self.elements.append(Spacer(0,inch/15))
-        #self.department_timeliness(department=department,program_id=program_id)
+        self.department_timeliness(department=department,program_id=program_id)
         self.elements.append(PageBreak())
         
         print(f"   Ending Region/Department Data Quality for {region,department}")
 
     def division2(self,program=None, mergedid=None):
+        
         
         print(f"Starting DQ Participant List for {program}")
         
@@ -1578,10 +1639,10 @@ class QuarterlyReports:
     def division3(self,department=None,program_id=None):
         print(f"   Starting Region/Department Data Quality for {program_id}")
         
-        #self.program_dataquality(department=department,program_id=program_id)
+        self.program_dataquality(department=department,program_id=program_id)
         self.elements.append(Paragraph(f"Data Entry Timeliness", rf.pageHeaderStyle2))
         self.elements.append(Spacer(0,inch/10))
-        #self.program_timeliness(program_id=program_id)
+        self.program_timeliness(program_id=program_id)
         self.elements.append(PageBreak())
 
 

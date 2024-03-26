@@ -320,8 +320,9 @@ class Name():
                 OR Client.LastName IS NULL)'''
                 
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -756,8 +757,9 @@ class SSN():
         '''
         
         sql_list = '''
-        SELECT DISTINCT Enrollment.PersonalID
-        FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
         LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
         INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
         INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -1211,8 +1213,9 @@ class DOB():
                 OR (Client.DOB > Enrollment.EntryDate) -- After the record creation date
                 )'''
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -1620,8 +1623,9 @@ class Race():
                 AND  Client.RaceNone in (8,9,99)'''
         
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -1926,8 +1930,9 @@ class Gender():
                 AND  (Client.GenderNone >= 8)'''
                 
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -2234,8 +2239,9 @@ class Veteran():
                 OR(Client.VeteranStatus = 1 AND (julianday(Enrollment.EntryDate) - julianday(Client.DOB)) / 365.25 <18 ))'''
                 
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -2646,9 +2652,10 @@ class Disabling():
         '''
         
         sql_list = '''
-        SELECT DISTINCT Enrollment.PersonalID
-        FROM Enrollment
-        LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
+                LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
         INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
         LEFT JOIN Disabilities ON Enrollment.PersonalID = Disabilities.PersonalID
         WHERE Enrollment.EntryDate <= ?
@@ -3050,8 +3057,9 @@ class StartDate():
                 AND (Enrollment.EntryDate < '1915-01-01'
                 OR Enrollment.EntryDate > Exit.ExitDate)'''
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 WHERE Enrollment.EntryDate <= ? 
@@ -3352,8 +3360,9 @@ class HOH():
                             AND Enrollment.PersonalID != Enrollment.PersonalID
                         )))'''
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -3686,11 +3695,12 @@ class Location():
                 AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
                 AND  ((Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NULL) 
                 OR (Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NOT NULL AND Enrollment.EnrollmentCoC NOT IN 
-                        ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-606', 'CA-612', 'CA-614', 'CA-607')))'''
+                        ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-612', 'CA-614', 'CA-607', 'CA-603')))'''
                         
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -3698,7 +3708,7 @@ class Location():
                 AND (Exit.ExitDate >= ? OR Exit.ExitDate IS NULL)
                 AND  ((Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NULL) 
                 OR (Enrollment.RelationshipToHoH = 1 AND Enrollment.EnrollmentCoC IS NOT NULL AND Enrollment.EnrollmentCoC NOT IN 
-                        ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-606', 'CA-612', 'CA-614', 'CA-607')))'''
+                        ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-612', 'CA-614', 'CA-607','CA-603')))'''
                 
         sql_active_non_outreach = """
             SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -3901,7 +3911,7 @@ class Location():
                     AND Enrollment.RelationshipToHoH = 1 
                     AND Enrollment.EnrollmentCoC IS NOT NULL 
                     AND Enrollment.EnrollmentCoC NOT IN 
-                            ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-606', 'CA-612', 'CA-614', 'CA-607')'''
+                            ('CA-600', 'CA-601', 'CA-606', 'CA-602', 'CA-500', 'CA-612', 'CA-614', 'CA-607','CA-603')'''
                     
             sql_active_non_outreach = """
                 SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
@@ -4000,8 +4010,9 @@ class Destination():
                 WHERE (Exit.ExitDate <= ? AND Exit.ExitDate >= ?)
                 AND  (Exit.Destination IN (8,9) OR (Exit.Destination=30 OR Exit.Destination IS NULL OR Exit.Destination =99)) '''
         sql_list = '''
-            SELECT DISTINCT Enrollment.PersonalID
-                FROM Enrollment
+            SELECT DISTINCT UniqueID.UniqueIdentifier
+                FROM UniqueID
+				LEFT JOIN Enrollment on UniqueID.PersonalID=Enrollment.PersonalID
                 LEFT JOIN Exit ON Enrollment.EnrollmentID = Exit.EnrollmentID
                 INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
                 INNER JOIN Client ON Enrollment.PersonalID = Client.PersonalID
@@ -4188,7 +4199,6 @@ class Destination():
                 return None
         elif output=="count":
             return total_score
-            
 
     def destination_missing(self,start_date, end_date, output=None,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
         #this should include just leavers
@@ -4283,6 +4293,76 @@ class Destination():
                 return None
         elif output=="count":
             return total_score
+    def number_leavers(self,start_date, end_date,program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
+        #this should include just leavers
+        conn = sqlite3.connect(db_name)
+        c=conn.cursor()
+    
+                
+        sql_active_non_outreach = """
+            SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
+            FROM Enrollment
+            LEFT JOIN Exit on Enrollment.EnrollmentID = Exit.EnrollmentID
+            INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+            WHERE (Exit.ExitDate <= ? AND Exit.ExitDate >= ?)
+            AND PATHProgramMasterList.PATHProgramType != 'Outreach Services'
+        """
+
+        sql_active_outreach = """
+            SELECT COUNT(DISTINCT Enrollment.EnrollmentID)
+            FROM Enrollment
+            LEFT JOIN Exit on Enrollment.EnrollmentID = Exit.EnrollmentID
+            INNER JOIN PATHProgramMasterList ON Enrollment.ProjectID = PATHProgramMasterList.MergedProgramID
+            WHERE (Exit.ExitDate <= ? AND Exit.ExitDate >= ?)
+            AND Enrollment.DateOfEngagement <= ?
+            AND PATHProgramMasterList.PATHProgramType = 'Outreach Services'
+        """
+
+        filter_params = [end_date, start_date]
+        outreach_params = [end_date, start_date, end_date]
+
+        if program_id is not None:
+            placeholders = ','.join(['?' for _ in program_id])
+            sql_active_non_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            sql_active_outreach += f' AND PATHProgramMasterList.MergedProgramID IN ({placeholders})'
+            filter_params.extend(program_id)
+            outreach_params.extend(program_id)
+
+        if department is not None:
+            placeholders = ','.join(['?' for _ in department])
+            sql_active_non_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            sql_active_outreach += f' AND PATHProgramMasterList.Department IN ({placeholders})'
+            filter_params.extend(department)
+            outreach_params.extend(department)
+
+        if region is not None:
+            placeholders = ','.join(['?' for _ in region])
+            sql_active_non_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            sql_active_outreach += f' AND PATHProgramMasterList.Region IN ({placeholders})'
+            filter_params.extend(region)
+            outreach_params.extend(region)
+
+        if program_type is not None:
+            placeholders = ','.join(['?' for _ in program_type])
+            sql_active_non_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            sql_active_outreach += f' AND PATHProgramMasterList.PATHProgramType IN ({placeholders})'
+            filter_params.extend(program_type)
+            outreach_params.extend(program_type)
+            
+
+        
+        c.execute(sql_active_outreach, outreach_params)
+        total_outreach = c.fetchone()[0]
+        
+        c.execute(sql_active_non_outreach, filter_params)
+        total_non_outreach = c.fetchone()[0]
+        
+
+        conn.close()
+
+        total_enrollments = total_outreach + total_non_outreach
+        return total_enrollments
+
 
 class PriorLiving():
     def prior_living_situation_A_total(self,start_date, end_date, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
@@ -9139,7 +9219,7 @@ time=Timeliness()
 
 #print(time.record_creation_exit_average(start_date='2024-01-01',end_date='2024-01-31',program_id=['LA|1319']))
 
-#print(name.name_total_accuracy(start_date='2024-01-01',end_date='2024-01-31',output="count"))
+#print(name.name_total_accuracy(start_date='2024-01-01',end_date='2024-01-31',program_id=['LA|5634']))
 #print(1-name.name_client_refused_doesnt_know(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
 #print(1-name.name_missing(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
 #print(1-name.name_data_accuracy(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
@@ -9163,7 +9243,7 @@ time=Timeliness()
 #print(gender.gender_client_refused_doesnt_know(start_date='2024-01-01',end_date='2024-01-31',output="count",department=['Veterans']))
 #print(gender.gender_missing(start_date='2024-01-01',end_date='2024-01-31',output="count",department=['Veterans']))
 
-#print(veteran.veteran_total_accuracy(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
+#print(veteran.veteran_total_accuracy(start_date='2024-01-01',end_date='2024-01-31',program_id=['LA|5634']))
 #print(1-veteran.veteran_client_refused_doesnt_know(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
 #print(1-veteran.veteran_missing(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
 #print(1-veteran.veteran_data_accuracy(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
@@ -9187,9 +9267,12 @@ time=Timeliness()
 
 #print(movein.movein_date_data_accuracy(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
 
-#print(destination.destination_total_accuracy(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
-#print(1-destination.destination_client_refused_doesnt_know(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
-#print(1-destination.destination_missing(start_date='2024-01-01',end_date='2024-01-31',department=['San Diego']))
+#print(destination.destination_total_accuracy(start_date='2024-02-01',end_date='2024-02-29',program_id=['LA|5634']))
+#print(destination.destination_client_refused_doesnt_know(start_date='2024-02-01',end_date='2024-02-29',program_id=['LA|5634']))
+#print(1-destination.destination_missing(start_date='2024-02-01',end_date='2024-02-29',program_id=['LA|5634']))
+#print(destination.number_leavers(start_date='2024-02-01',end_date='2024-02-29', program_id=['LA|5821']))
+
+#print(active_clients(start_date='2024-02-01',end_date='2024-02-29',program_id=['LA|5634']))
 
 #print(income.starting_income_client_refused(start_date='2024-01-01',end_date='2024-01-31',department=['Orange County']))
 #print(income.starting_income_missing(start_date='2024-01-01',end_date='2024-01-31',department=['Orange County']))
@@ -9243,12 +9326,12 @@ def line_chart_specific_days(function, filename):
     for d, values in results_by_department.items():
         ax.plot(days_of_interest, values, linestyle='-', label=f'{d}', linewidth=0.5, markersize=2, color=department_colors[d])
 
-    ax.plot(days_of_interest, agency_results, linestyle='-', label='Agency', linewidth=.5, markersize=2, color='red')
+    ax.plot(days_of_interest, agency_results, linestyle='-', label='Agency', linewidth=.75, marker='o',markersize=1, color='black')
     ax.axhline(0, color='white', linestyle='--')
 
     # Set x-axis tick labels with font size
     ax.set_xticks(days_of_interest)
-    ax.set_xticklabels([f'Day {days}' for days in days_of_interest], fontsize=4, ha='right')
+    ax.set_xticklabels([f'Day {days}' for days in days_of_interest], fontsize=4, ha='center')
 
     ax.yaxis.set_major_formatter(PercentFormatter(100))
     ax.set_yticklabels([f'{tick * 100:.1f}%' for tick in ax.get_yticks()], fontsize=4)
@@ -9262,7 +9345,7 @@ def line_chart_specific_days(function, filename):
     plt.close()
     #plt.show()
     
-#print(line_chart_specific_days(Timeliness.percent_start_records_created_within_x_days,'entry_timeliness.png'))
+#print(line_chart_specific_days(Timeliness.percent_exit_records_created_within_x_days,'exit_timeliness.png'))
 
 
 def personal_data_quality(start_date, end_date, program_id=None, department= None, region=None, program_type=None, db_name='merged_hmis2024.db'):
@@ -9392,7 +9475,7 @@ def personal_data_quality(start_date, end_date, program_id=None, department= Non
 
 #print(personal_data_quality(start_date='2024-02-01',end_date='2024-02-29'))
 
-
+#print(name.name_total_accuracy(start_date='2024-01-01', end_date='2024-01-31', output='list'))
 
 def pt_list(start_date, end_date, type=None, program_id=None, department=None, region=None, program_type=None, db_name='merged_hmis2024.db'):
     # Get name and SSN lists
@@ -9446,7 +9529,5 @@ def pt_list(start_date, end_date, type=None, program_id=None, department=None, r
 
 
 
-#print(pt_list(start_date='2024-01-01',end_date='2024-01-31',department=['Veterans']))
-checkmark_text = "\u2713"
+#print(personal_data_quality(start_date='2024-01-01',end_date='2024-01-31',department=['South County']))
 
-#print(checkmark_text)

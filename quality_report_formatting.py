@@ -59,6 +59,7 @@ titlePageStyle = ParagraphStyle('Title Page',fontName="Montserrat",fontSize=40, 
 titlesubPageStyle = ParagraphStyle('Title Page',fontName="MontserratSemiBold",fontSize=80, leading=35, alignment=TA_LEFT)
 titlePageSubHeaderStyle = ParagraphStyle('Title Page Sub',fontName="OpenSans",fontSize=13, leading=12, alignment=TA_LEFT)
 pageHeaderStyle = ParagraphStyle('Page Header', fontName="MontserratSemiBold", fontSize=18, leading=20, alignment=TA_CENTER, textColor=black)
+pageHeaderStylesmall = ParagraphStyle('Page Header', fontName="MontserratSemiBold", fontSize=14, leading=20, alignment=TA_CENTER, textColor=black)
 pageHeaderStyle2 = ParagraphStyle('Page Header', fontName="Montserrat", fontSize=18, leading=20, alignment=TA_CENTER, textColor=black)
 pageHeaderStyle3 = ParagraphStyle('Page Header', fontName="MontserratSemiBold", fontSize=18, leading=20, alignment=TA_CENTER, textColor=PATHPurple)
 pageHeaderStyle4 = ParagraphStyle('Page Header', fontName="MontserratSemiBold", fontSize=18, leading=20, alignment=TA_CENTER, textColor=PATHGreen)
@@ -99,6 +100,8 @@ noteStyle2 = ParagraphStyle('Table Text', fontName="OpenSans", fontSize=8, leadi
 ComingSoonStyle = ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=10, alignment=TA_CENTER, borderWidth=4)
 tableTextStyleCenterRed = ParagraphStyle('Table Text', fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=red)
 tableTextStyleCenterGreen = ParagraphStyle('Table Text', fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,textColor=green)
+tableValuesStyleRed = ParagraphStyle('Table Values', fontName="OpenSansBold", fontSize=8, leading=12, alignment=TA_CENTER, borderWidth=4,backColor=red)
+
 
 
 # Agency Indicator by Dept Table
